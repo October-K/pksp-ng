@@ -1,7 +1,7 @@
 (() => {
   // ★ここだけ変更してください。
   // これは「簡易的な合言葉」です。本格的な認証ではありません。
-  const PASSWORD = "CHANGE-ME";
+  const PASSWORD = "promise";
 
   const AUTH_KEY = "psng-auth-v1";
   const form = document.getElementById("password-form");
