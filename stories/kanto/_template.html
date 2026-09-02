@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EP.00 タイトル</title>
+<style>
+:root{--bg:#f4f1eb;--ink:#2c2520;--accent:#c0392b;--card-bg:#fffdf8;--border:#d4cdc4;--shadow:rgba(44,37,32,.08)}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#f4f1eb,#eee8df);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic",sans-serif;line-height:2.1}
+.wrap{max-width:780px;margin:0 auto;padding:42px 20px 80px}
+.paper{position:relative;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:54px 48px;box-shadow:0 6px 28px var(--shadow)}
+.paper::before{content:"";position:absolute;inset:14px;border:1px solid rgba(212,205,196,.55);border-radius:9px;pointer-events:none}
+.head,.text,.read-marker,.back{position:relative;z-index:1}
+.head{padding-bottom:20px;margin-bottom:30px;border-bottom:1px solid var(--border)}
+.meta{font-size:11px;letter-spacing:.14em;opacity:.48}
+h1{font-family:Georgia,"Yu Mincho",serif;font-size:31px;line-height:1.45;margin:.2em 0 .3em}
+.text{font-size:15px}.text p{margin:0 0 1.5em}
+.read-marker{margin-top:54px;padding:22px;border-top:1px dashed var(--border);text-align:center}
+.read-marker strong{display:block;color:var(--accent);letter-spacing:.16em;font-size:12px;margin-bottom:6px}
+.read-marker p{font-size:12px;opacity:.55}
+.back{display:inline-block;margin-top:26px;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none}
+@media(max-width:600px){.wrap{padding:20px 10px 55px}.paper{padding:40px 26px}}
+</style>
+</head>
+<body>
+<div class="wrap"><article class="paper">
+  <header class="head">
+    <p class="meta">KANTO / EP.00</p>
+    <h1>タイトル</h1>
+    <p class="meta">POKÉMON SPECIAL NEXT GENERATION</p>
+  </header>
+
+  <div class="text" id="novel-text">
+    <p>本文を読み込んでいます……</p>
+  </div>
+
+  <script>
+  fetch("text/00.txt")
+    .then(response => {
+      if (!response.ok) throw new Error("本文ファイルを読み込めませんでした");
+      return response.text();
+    })
+    .then(text => {
+      const box = document.getElementById("novel-text");
+      box.innerHTML = "";
+
+      const blocks = text
+        .replace(/\r\n/g, "\n")
+        .trim()
+        .split(/\n\s*\n/);
+
+      blocks.forEach(block => {
+        const p = document.createElement("p");
+        const lines = block.split("\n");
+
+        lines.forEach((line, index) => {
+          if (index > 0) p.appendChild(document.createElement("br"));
+          p.appendChild(document.createTextNode(line));
+        });
+
+        box.appendChild(p);
+      });
+    })
+    .catch(error => {
+      document.getElementById("novel-text").innerHTML =
+        "<p>本文の読み込みに失敗しました。</p>";
+      console.error(error);
+    });
+  </script>
+
+  <div class="read-marker" id="read-marker">
+    <strong>READ COMPLETE</strong>
+    <p>ここまで読むと、TOPの旅の現在地へ反映されます。</p>
+  </div>
+
+  <a class="back" href="../../index.html#story">← SITEへ戻る</a>
+</article></div>
+
+<script>
+const KEY="psng-reading-progress-v1";
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch{return{}}}
+function markRead(){
+  const p=load();
+  if(!p.kanto)p.kanto={read:[],furthest:0,title:""};
+  if(!p.kanto.read.includes(0))p.kanto.read.push(0);
+  p.kanto.read.sort((a,b)=>a-b);
+  if(0>=p.kanto.furthest){p.kanto.furthest=0;p.kanto.title="タイトル";}
+  localStorage.setItem(KEY,JSON.stringify(p));
+  document.querySelector("#read-marker p").textContent="読了を記録しました。TOPの進捗にも反映されます。";
+}
+const marker=document.getElementById("read-marker");
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{if(entry.isIntersecting){markRead();observer.disconnect();}});
+},{threshold:.7});
+observer.observe(marker);
+</script>
+</body>
+</html>

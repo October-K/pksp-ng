@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POKÉMON SPECIAL NEXT GENERATION</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#f4f1eb;--bg-warm:#ede8df;--ink:#2c2520;--ink-light:#6b6056;
+      --accent:#c0392b;--accent-soft:#e8d5c4;--card-bg:#fffdf8;--border:#d4cdc4;
+      --shadow:rgba(44,37,32,.08);--radius:12px;--content-width:860px
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:"Alegreya Sans","Noto Sans JP",sans-serif;font-size:16px;line-height:1.7;
+      color:var(--ink);background:var(--bg);min-height:100vh
+    }
+    a{color:inherit}button{font-family:inherit}
+
+    /* HERO */
+    .hero{
+      position:relative;padding:80px 24px 48px;text-align:center;overflow:hidden;
+      background:linear-gradient(175deg,#e8ddd0 0%,#f4f1eb 60%,#dfe6e0 100%)
+    }
+    .hero::before,.hero::after{content:"";position:absolute;border-radius:50%}
+    .hero::before{top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(192,57,43,.08),transparent 70%)}
+    .hero::after{bottom:-40px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(76,132,108,.08),transparent 70%)}
+    .hero-content{position:relative;z-index:1;max-width:var(--content-width);margin:0 auto}
+    .logo-small{font-size:13px;letter-spacing:.35em;text-transform:uppercase;opacity:.6;margin-bottom:8px}
+    .hero h1{font-family:"Playfair Display",serif;font-size:clamp(36px,8vw,64px);font-weight:900;letter-spacing:.04em;line-height:1.1;margin-bottom:16px}
+    .hero-copy{font-size:15px;letter-spacing:.2em;opacity:.7}
+    .hero-note{position:relative;z-index:1;margin-top:32px;display:flex;justify-content:center;gap:24px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.45}
+
+    /* NAV */
+    .global-nav{display:flex;width:100%;position:relative;z-index:10;margin-top:-2px}
+    .global-nav a{
+      flex:1;display:flex;flex-direction:column;align-items:center;padding:14px 20px 16px;text-decoration:none;
+      color:var(--ink);background:var(--card-bg);border:1px solid var(--border);border-bottom:none;border-radius:14px 14px 0 0;
+      min-width:100px;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 -2px 8px var(--shadow)
+    }
+    .global-nav a:hover{background:#fff;transform:translateY(-3px);box-shadow:0 -4px 16px var(--shadow)}
+    .global-nav a.active{background:#fff;border-top-color:var(--accent);color:var(--accent)}
+    .nav-icon{font-size:18px;margin-bottom:4px;opacity:.5}
+    .global-nav a b{font-size:12px;letter-spacing:.15em;font-weight:700}
+    .global-nav a small{font-size:10px;opacity:.5;margin-top:2px}
+
+    .menu-toggle{
+      display:none;position:fixed;bottom:24px;right:24px;z-index:999;background:var(--ink);color:#fff;border:none;
+      padding:12px 20px;border-radius:100px;font-size:13px;letter-spacing:.1em;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.2)
+    }
+
+    /* COMMON */
+    main{max-width:var(--content-width);margin:0 auto;padding:48px 24px 64px}
+    .paper{
+      position:relative;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:40px 36px;
+      margin-bottom:40px;box-shadow:0 2px 16px var(--shadow),0 0 0 1px rgba(255,255,255,.5) inset
+    }
+    .section-ribbon{position:absolute;top:-1px;left:32px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.2em;padding:6px 16px;border-radius:0 0 8px 8px}
+    .eyebrow{font-size:11px;letter-spacing:.25em;text-transform:uppercase;opacity:.5;margin-bottom:6px}
+    h2,h3{font-family:"Playfair Display","Noto Sans JP",serif}
+    h2{font-size:26px;font-weight:700;line-height:1.5}
+    .intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:24px}
+    .intro-text p{margin-bottom:12px;opacity:.8;font-size:15px}
+    .paper-link{display:inline-block;margin-top:8px;font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+    .paper-link:hover{border-bottom-color:var(--accent)}
+    .section-title-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+    .hand-note{font-size:13px;opacity:.5;font-style:italic;padding-top:8px}
+
+    /* JOURNEY */
+    .region-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+    .region-card{
+      display:block;text-decoration:none;color:var(--ink);background:var(--bg);border:1px solid var(--border);border-radius:10px;
+      padding:20px 18px;transition:transform .2s,box-shadow .2s,border-color .2s
+    }
+    .region-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px var(--shadow)}
+    .region-card.current{border-color:var(--accent);background:linear-gradient(135deg,#fff9f5,#fff);box-shadow:0 2px 12px rgba(192,57,43,.08)}
+    .card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .region-no{font-size:11px;font-weight:700;letter-spacing:.15em;opacity:.4}
+    .status{font-size:10px;font-weight:700;letter-spacing:.15em;padding:2px 8px;border-radius:100px;background:var(--border);color:var(--ink-light)}
+    .region-card.current .status{background:var(--accent);color:#fff}
+    .region-icon{font-size:28px;margin-bottom:10px;opacity:.25}
+    .region-card.current .region-icon{opacity:.6;color:var(--accent)}
+    .region-card h3{font-size:18px;font-weight:700;letter-spacing:.05em}
+    .region-card .jp{font-size:12px;opacity:.5;margin-bottom:14px}
+    .location{font-size:12px;margin-bottom:12px}
+    .location span{display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;opacity:.45;margin-bottom:2px}
+    .location strong{font-weight:600}
+    .progress{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.1em;opacity:.6}
+    .progress-bar{flex:1;height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+    .progress-fill{display:block;height:100%;width:0;background:var(--accent);border-radius:4px;transition:width .4s ease}
+    .progress b{min-width:30px;text-align:right}
+    .journey-note{margin-top:20px;font-size:12px;opacity:.45;text-align:center}
+
+    /* UPDATE */
+    .stamp{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--accent);border:2px solid var(--accent);border-radius:100px;padding:2px 14px;transform:rotate(-4deg)}
+    .update-card ul{list-style:none}
+    .update-card li{display:flex;gap:16px;padding:12px 0;border-bottom:1px dashed var(--border);font-size:14px}
+    .update-card li:last-child{border-bottom:none}
+    .update-card time{flex-shrink:0;font-size:12px;font-weight:700;letter-spacing:.08em;opacity:.5;padding-top:1px}
+    .bottom-note{text-align:center;padding:48px 24px;opacity:.5;font-size:15px;line-height:2}
+    .bottom-note span{display:block;font-size:20px;margin:8px 0}
+
+    /* PAGE PANELS */
+    .page-panel{
+      display:none;max-width:var(--content-width);margin:48px auto 64px;padding:40px 36px;background:var(--card-bg);
+      border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 2px 16px var(--shadow)
+    }
+    .page-panel.active{display:block}
+
+    /* STORY */
+    .story-header{margin-bottom:28px}
+    .story-layout{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:28px;margin-top:24px}
+    .story-main{min-width:0}
+    .story-introduction{
+      padding:26px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:22px
+    }
+    .story-introduction h3{font-size:21px;margin-bottom:10px}
+    .story-introduction p{font-size:14px;opacity:.78;margin-top:9px}
+    .story-region{display:none}
+    .story-region.active{display:block;animation:fadeIn .2s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .story-region-title{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding-bottom:13px;margin-bottom:14px;border-bottom:1px solid var(--border)}
+    .story-region-title h3{font-size:23px}
+    .story-region-title p{font-size:11px;opacity:.46}
+    .episode-list{display:grid;gap:10px}
+    .episode-link{
+      display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 15px;
+      color:var(--ink);text-decoration:none;background:#fff;border:1px solid var(--border);border-radius:9px;transition:.2s
+    }
+    .episode-link:hover{transform:translateX(3px);border-color:var(--accent);box-shadow:0 4px 16px var(--shadow)}
+    .episode-link.read{background:#fff9f5;border-color:rgba(192,57,43,.28)}
+    .ep-no{font-size:11px;font-weight:700;letter-spacing:.12em;opacity:.48}
+    .ep-copy{min-width:0}
+    .ep-title{display:block;font-size:14px;font-weight:600}
+    .ep-summary{display:block;margin-top:3px;font-size:11px;opacity:.48}
+    .ep-state{font-size:10px;letter-spacing:.1em;opacity:.45}
+    .episode-link.read .ep-state{color:var(--accent);opacity:1;font-weight:700}
+    .story-tabs{position:sticky;top:18px;align-self:start;display:grid;gap:9px}
+    .story-tab{
+      width:100%;text-align:left;padding:14px 15px;border:1px solid var(--border);border-radius:9px;background:var(--bg);
+      color:var(--ink);cursor:pointer;transition:.2s
+    }
+    .story-tab span{display:block;font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.08em}
+    .story-tab small{display:block;font-size:10px;opacity:.46;margin-top:2px}
+    .story-tab:hover,.story-tab.active{color:var(--accent);border-color:var(--accent);background:#fff9f5;transform:translateX(-3px)}
+    .story-help{font-size:11px;opacity:.5;border:1px dashed var(--border);border-radius:8px;padding:11px 13px;margin-top:4px}
+
+
+    /* CHARACTER SELECT */
+    .character-intro {
+      margin-top: 22px;
+      padding: 20px 22px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      opacity: .82;
+    }
+
+    .character-select-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin: 30px 0 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .character-select-title h3 {
+      font-size: 22px;
+      letter-spacing: .05em;
+    }
+
+    .character-select-title p {
+      font-size: 11px;
+      opacity: .46;
+      letter-spacing: .08em;
+    }
+
+    .character-region {
+      margin-top: 30px;
+    }
+
+    .character-region + .character-region {
+      padding-top: 28px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .character-region-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .character-region-heading h4 {
+      font-family: "Playfair Display", serif;
+      font-size: 18px;
+      letter-spacing: .08em;
+    }
+
+    .character-region-heading small {
+      font-size: 10px;
+      opacity: .42;
+      letter-spacing: .12em;
+    }
+
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .character-card {
+      position: relative;
+      min-width: 0;
+      color: var(--ink);
+      text-decoration: none;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .18s, box-shadow .2s, border-color .2s;
+    }
+
+    .character-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 22px var(--shadow);
+    }
+
+    .character-portrait {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(192,57,43,.07), rgba(76,132,108,.08)),
+        var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .character-portrait::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -9%;
+      width: 48%;
+      height: 78%;
+      transform: translateX(-50%);
+      border-radius: 50% 50% 18% 18%;
+      background: linear-gradient(180deg, #bbb4aa, #8f8981);
+      opacity: .42;
+    }
+
+    .character-portrait::after {
+      content: "IMAGE";
+      position: absolute;
+      right: 10px;
+      bottom: 8px;
+      font-size: 9px;
+      letter-spacing: .14em;
+      opacity: .28;
+    }
+
+    .character-card-body {
+      padding: 12px 14px 14px;
+    }
+
+    .character-card-body strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .character-card-body span {
+      display: block;
+      margin-top: 3px;
+      font-size: 10px;
+      letter-spacing: .12em;
+      opacity: .45;
+    }
+
+    .character-card .select-mark {
+      position: absolute;
+      top: 9px;
+      left: 9px;
+      padding: 2px 7px;
+      border-radius: 100px;
+      background: rgba(255,253,248,.9);
+      border: 1px solid var(--border);
+      font-size: 9px;
+      letter-spacing: .1em;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .character-card:hover .select-mark {
+      opacity: 1;
+    }
+
+    .character-card.unknown .character-portrait {
+      background:
+        radial-gradient(circle at 50% 35%, rgba(44,37,32,.18), transparent 18%),
+        linear-gradient(135deg, #ddd7cf, #c7c1ba);
+    }
+
+    .character-card.unknown .character-portrait::before {
+      background: #433d39;
+      opacity: .9;
+      filter: blur(.4px);
+    }
+
+    .character-card.unknown .character-portrait::after {
+      content: "???";
+      right: 50%;
+      bottom: 18px;
+      transform: translateX(50%);
+      font-family: "Playfair Display", serif;
+      font-size: 18px;
+      opacity: .5;
+      letter-spacing: .2em;
+    }
+
+    .character-card.unknown .character-card-body strong {
+      letter-spacing: .15em;
+    }
+
+    .sub-character-wrap {
+      margin-top: 36px;
+      padding-top: 30px;
+      border-top: 2px solid var(--border);
+    }
+
+    .sub-character-grid .character-portrait {
+      aspect-ratio: 16 / 9;
+    }
+
+    .sub-character-grid .character-portrait::before {
+      width: 38%;
+      height: 90%;
+    }
+
+    @media (max-width: 700px) {
+      .character-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 440px) {
+      .character-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .character-card-body {
+        padding: 10px 10px 12px;
+      }
+
+      .character-card-body strong {
+        font-size: 12px;
+      }
+    }
+
+
+
+    /* EXTRA */
+    .extra-intro {
+      margin-top: 22px;
+      padding: 20px 22px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      opacity: .82;
+    }
+
+    .extra-section {
+      margin-top: 34px;
+      padding-top: 30px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .extra-section:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .extra-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .extra-title-row h3 {
+      font-size: 22px;
+      letter-spacing: .04em;
+    }
+
+    .extra-title-row p {
+      font-size: 11px;
+      opacity: .45;
+      letter-spacing: .08em;
+    }
+
+    /* PAIR DATABASE */
+    .pair-selector {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+
+    .select-box label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 10px;
+      letter-spacing: .15em;
+      opacity: .5;
+    }
+
+    .select-box select {
+      width: 100%;
+      padding: 12px 13px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .pair-swap {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--card-bg);
+      color: var(--accent);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .pair-swap:hover {
+      transform: rotate(180deg);
+      border-color: var(--accent);
+    }
+
+    .pair-result {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 120px minmax(0,1fr);
+      gap: 12px;
+      align-items: stretch;
+      margin-top: 18px;
+    }
+
+    .pair-person {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .pair-person h4 {
+      font-family: "Playfair Display", "Noto Sans JP", serif;
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    .pair-person .latin {
+      display: block;
+      font-size: 10px;
+      letter-spacing: .13em;
+      opacity: .42;
+      margin-bottom: 18px;
+    }
+
+    .pair-person dl {
+      display: grid;
+      gap: 11px;
+    }
+
+    .pair-person dt {
+      font-size: 10px;
+      letter-spacing: .12em;
+      opacity: .45;
+    }
+
+    .pair-person dd {
+      margin: 2px 0 0;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .height-compare {
+      position: relative;
+      min-height: 260px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 16px;
+      padding: 12px 6px 24px;
+      background:
+        repeating-linear-gradient(
+          to top,
+          transparent 0 24px,
+          rgba(212,205,196,.55) 24px 25px
+        ),
+        var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .height-figure {
+      width: 34px;
+      min-height: 40px;
+      border-radius: 18px 18px 6px 6px;
+      background: var(--ink-light);
+      opacity: .55;
+      transition: height .35s ease;
+    }
+
+    .height-figure.a { background: var(--accent); opacity: .62; }
+    .height-scale {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      font-size: 9px;
+      opacity: .4;
+      writing-mode: vertical-rl;
+      letter-spacing: .08em;
+    }
+
+    .pair-summary {
+      grid-column: 1 / -1;
+      margin-top: 2px;
+      padding: 18px 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .pair-summary-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 10px 16px;
+      font-size: 13px;
+    }
+
+    .pair-summary-grid dt {
+      font-size: 10px;
+      letter-spacing: .12em;
+      opacity: .45;
+    }
+
+    .pair-summary-grid dd {
+      margin: 0;
+    }
+
+    .friendship-meter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .friendship-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .friendship-fill {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      transition: width .35s ease;
+    }
+
+    .pair-placeholder {
+      font-size: 12px;
+      opacity: .5;
+      font-style: italic;
+    }
+
+    /* GALLERY */
+    .gallery-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .gallery-filter {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--card-bg);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+
+    .gallery-filter.active,
+    .gallery-filter:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: #fff9f5;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .gallery-item {
+      display: block;
+      color: var(--ink);
+      text-decoration: none;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .18s, box-shadow .2s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-4px) rotate(-.3deg);
+      box-shadow: 0 8px 22px var(--shadow);
+    }
+
+    .gallery-thumb {
+      aspect-ratio: 4 / 3;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, rgba(192,57,43,.08), rgba(76,132,108,.08)),
+        var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: "Playfair Display", serif;
+      font-size: 12px;
+      letter-spacing: .14em;
+      opacity: .55;
+    }
+
+    .gallery-caption {
+      padding: 12px 14px 14px;
+    }
+
+    .gallery-caption strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .gallery-caption span {
+      display: block;
+      margin-top: 3px;
+      font-size: 10px;
+      letter-spacing: .1em;
+      opacity: .45;
+    }
+
+    .gallery-note {
+      margin-top: 14px;
+      font-size: 11px;
+      opacity: .45;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .pair-selector {
+        grid-template-columns: 1fr;
+      }
+
+      .pair-swap {
+        justify-self: center;
+      }
+
+      .pair-result {
+        grid-template-columns: 1fr 90px 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .pair-result {
+        grid-template-columns: 1fr;
+      }
+
+      .height-compare {
+        min-height: 180px;
+      }
+
+      .pair-summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+    }
+
+
+    /* FOOTER */
+    footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);font-size:13px}
+    footer strong{display:block;font-family:"Playfair Display",serif;font-size:16px;letter-spacing:.05em;line-height:1.6}
+    footer p{margin-top:6px;opacity:.5;font-size:13px}
+    .sns-links{display:flex;justify-content:center;gap:20px;margin:24px 0}
+    .sns-links a{text-decoration:none;color:var(--ink);font-weight:700;font-size:13px;letter-spacing:.1em;padding:8px 18px;border:1px solid var(--border);border-radius:100px}
+    .sns-links a:hover{background:var(--bg-warm)}
+    footer small{display:block;margin-top:16px;opacity:.35;font-size:11px;letter-spacing:.1em}
+
+    @media(max-width:700px){
+      .global-nav{position:fixed;bottom:0;left:0;right:0;flex-direction:column;padding:16px;background:var(--card-bg);border-top:1px solid var(--border);box-shadow:0 -4px 24px var(--shadow);transform:translateY(100%);transition:transform .3s ease;margin-top:0;z-index:998}
+      .global-nav.open{transform:translateY(0)}
+      .global-nav a{flex-direction:row;justify-content:flex-start;gap:12px;border-radius:8px;border:1px solid var(--border);margin-bottom:6px;min-width:auto;box-shadow:none}
+      .global-nav a:hover{transform:none}
+      .menu-toggle{display:block}
+      .intro-grid{grid-template-columns:1fr}
+      .region-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .region-card{padding:16px 12px}
+      .paper{padding:32px 24px}
+      .page-panel{margin:32px 16px 48px;padding:32px 24px}
+      .story-layout{grid-template-columns:1fr}
+      .story-tabs{position:static;grid-row:1;grid-template-columns:repeat(2,minmax(0,1fr))}
+      .story-tab:hover,.story-tab.active{transform:translateY(-2px)}
+      .episode-link{grid-template-columns:58px minmax(0,1fr)}
+      .ep-state{grid-column:2}
+    }
+    @media(max-width:480px){
+      .hero{padding:60px 20px 40px}.hero h1{font-size:34px}.hero-note{gap:12px;flex-direction:column}
+      main{padding:32px 16px 48px}.region-grid{grid-template-columns:1fr}.update-card li{flex-direction:column;gap:2px}
+      .sns-links{flex-direction:column;align-items:center}
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="hero-content">
+    <p class="logo-small">FAN PROJECT</p>
+    <h1>POKÉMON SPECIAL<br>NEXT GENERATION</h1>
+    <p class="hero-copy">次世代ポケットモンスターSPECIAL</p>
+    <div class="hero-note"><span>PERSONAL ARCHIVE</span><span>2026 —</span></div>
+  </div>
+</header>
+
+<nav class="global-nav" id="global-nav" aria-label="メインナビゲーション">
+  <a href="#top" data-page="top" class="active"><span class="nav-icon">0</span><b>HOME</b><small>トップ</small></a>
+  <a href="#story" data-page="story"><span class="nav-icon">1</span><b>STORY</b><small>物語</small></a>
+  <a href="#character" data-page="character"><span class="nav-icon">2</span><b>CHARACTER</b><small>登場人物</small></a>
+  <a href="#extra" data-page="extra"><span class="nav-icon">3</span><b>EXTRA</b><small>資料</small></a>
+  <a href="#sns" data-page="sns"><span class="nav-icon">↗</span><b>SNS</b><small>LINK</small></a>
+</nav>
+
+<button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="global-nav">MENU</button>
+
+<main id="home-content">
+  <section class="paper">
+    <div class="section-ribbon">ABOUT</div>
+    <div class="intro-grid">
+      <div><p class="eyebrow">WELCOME</p><h2>約束を、<br>果たす旅へ。</h2></div>
+      <div class="intro-text">
+        <p>次世代の物語を記録する個人制作サイトです。</p>
+        <p>それぞれの物語と登場人物をゆっくり追っていきます。</p>
+        <a href="#story" class="paper-link" data-page-link="story">STORY を読む →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="paper">
+    <div class="section-title-row">
+      <div><p class="eyebrow">OUR JOURNEY</p><h2>旅の現在地</h2></div>
+      <p class="hand-note">少年少女たちの、現在の歩みを記録。</p>
+    </div>
+
+    <div class="region-grid">
+      <a href="#story" class="region-card" data-region="kanto" data-total="30">
+        <div class="card-top"><span class="region-no">01</span><span class="status">NOT STARTED</span></div>
+        <div class="region-icon">○</div><h3>KANTO</h3><p class="jp">カントー編</p>
+        <div class="location"><span>CURRENT LOCATION</span><strong>未読</strong></div>
+        <div class="progress"><span>READ</span><div class="progress-bar"><i class="progress-fill"></i></div><b>0%</b></div>
+      </a>
+
+      <a href="#story" class="region-card" data-region="johto" data-total="0">
+        <div class="card-top"><span class="region-no">02</span><span class="status">NOT STARTED</span></div>
+        <div class="region-icon">○</div><h3>JOHTO</h3><p class="jp">ジョウト編</p>
+        <div class="location"><span>CURRENT LOCATION</span><strong>未読</strong></div>
+        <div class="progress"><span>READ</span><div class="progress-bar"><i class="progress-fill"></i></div><b>0%</b></div>
+      </a>
+
+      <a href="#story" class="region-card" data-region="hoenn" data-total="0">
+        <div class="card-top"><span class="region-no">03</span><span class="status">NOT STARTED</span></div>
+        <div class="region-icon">○</div><h3>HOENN</h3><p class="jp">ホウエン編</p>
+        <div class="location"><span>CURRENT LOCATION</span><strong>未読</strong></div>
+        <div class="progress"><span>READ</span><div class="progress-bar"><i class="progress-fill"></i></div><b>0%</b></div>
+      </a>
+
+      <a href="#story" class="region-card" data-region="sinnoh" data-total="0">
+        <div class="card-top"><span class="region-no">04</span><span class="status">NOT STARTED</span></div>
+        <div class="region-icon">○</div><h3>SINNOH</h3><p class="jp">シンオウ編</p>
+        <div class="location"><span>CURRENT LOCATION</span><strong>未読</strong></div>
+        <div class="progress"><span>READ</span><div class="progress-bar"><i class="progress-fill"></i></div><b>0%</b></div>
+      </a>
+    </div>
+
+    <p class="journey-note">※ 読了率・現在地は、このブラウザで読んだ話から自動反映されます。</p>
+  </section>
+
+  <section class="paper update-card">
+    <div class="section-title-row">
+      <div><p class="eyebrow">LATEST</p><h2>更新履歴</h2></div><span class="stamp">UPDATE</span>
+    </div>
+    <ul>
+      <li><time>2026.08.31</time><span>STORYページと読了記録機能を追加しました。</span></li>
+      <li><time>2026.08.30</time><span>キャラクターページを追加しました。</span></li>
+      <li><time>2026.08.29</time><span>サイトを開設しました。</span></li>
+    </ul>
+  </section>
+
+  <div class="bottom-note"><span>✦</span><p>物語は、まだ始まったばかり。</p><span>◉</span></div>
+</main>
+
+<!-- STORY -->
+<section class="page-panel" id="story" data-page-panel="story">
+  <div class="story-header"><p class="eyebrow">STORY</p><h2>物語</h2></div>
+
+  <div class="story-layout">
+    <div class="story-main">
+      <div class="story-introduction">
+        <p class="eyebrow">INTRODUCTION</p>
+        <h3>約束を果たす旅へ。</h3>
+        <p>ここに作品全体のIntroductionが入ります。物語全体の前提や、最初に読者へ伝えたいことを載せる場所です。</p>
+        <p>右の地方タブを選ぶと、この左側が各地方の小説一覧へ切り替わります。</p>
+      </div>
+
+      <section class="story-region active" data-story-region="kanto">
+        <div class="story-region-title"><div><p class="eyebrow">01 / KANTO</p><h3>カントー編</h3></div><p>全30話予定</p></div>
+        <div class="episode-list">
+          <a class="episode-link" href="stories/kanto/01.html" target="_blank" rel="noopener" data-episode-region="kanto" data-episode="1">
+            <span class="ep-no">EP.01</span><span class="ep-copy"><span class="ep-title">旅立ち</span><span class="ep-summary">短いあらすじは、各話完成後にここへ。</span></span><span class="ep-state">OPEN ↗</span>
+          </a>
+          <a class="episode-link" href="stories/kanto/02.html" target="_blank" rel="noopener" data-episode-region="kanto" data-episode="2">
+            <span class="ep-no">EP.02</span><span class="ep-copy"><span class="ep-title">マサラタウン</span><span class="ep-summary">短いあらすじは、各話完成後にここへ。</span></span><span class="ep-state">OPEN ↗</span>
+          </a>
+          <a class="episode-link" href="stories/kanto/03.html" target="_blank" rel="noopener" data-episode-region="kanto" data-episode="3">
+            <span class="ep-no">EP.03</span><span class="ep-copy"><span class="ep-title">幼馴染</span><span class="ep-summary">短いあらすじは、各話完成後にここへ。</span></span><span class="ep-state">OPEN ↗</span>
+          </a>
+          <a class="episode-link" href="stories/kanto/04.html" target="_blank" rel="noopener" data-episode-region="kanto" data-episode="4">
+            <span class="ep-no">EP.04</span><span class="ep-copy"><span class="ep-title">それぞれの目的</span><span class="ep-summary">短いあらすじは、各話完成後にここへ。</span></span><span class="ep-state">OPEN ↗</span>
+          </a>
+          <a class="episode-link" href="stories/kanto/05.html" target="_blank" rel="noopener" data-episode-region="kanto" data-episode="5">
+            <span class="ep-no">EP.05</span><span class="ep-copy"><span class="ep-title">道の途中</span><span class="ep-summary">短いあらすじは、各話完成後にここへ。</span></span><span class="ep-state">OPEN ↗</span>
+          </a>
+          <a class="episode-link" href="stories/kanto/06.html" target="_blank" rel="noopener" data-episode-region="kanto" data-episode="6">
+            <span class="ep-no">EP.06</span><span class="ep-copy"><span class="ep-title">約束</span><span class="ep-summary">短いあらすじは、各話完成後にここへ。</span></span><span class="ep-state">OPEN ↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="story-region" data-story-region="johto">
+        <div class="story-region-title"><div><p class="eyebrow">02 / JOHTO</p><h3>ジョウト編</h3></div><p>準備中</p></div>
+        <p>ここにジョウト編の小説リストが入ります。</p>
+      </section>
+      <section class="story-region" data-story-region="hoenn">
+        <div class="story-region-title"><div><p class="eyebrow">03 / HOENN</p><h3>ホウエン編</h3></div><p>準備中</p></div>
+        <p>ここにホウエン編の小説リストが入ります。</p>
+      </section>
+      <section class="story-region" data-story-region="sinnoh">
+        <div class="story-region-title"><div><p class="eyebrow">04 / SINNOH</p><h3>シンオウ編</h3></div><p>準備中</p></div>
+        <p>ここにシンオウ編の小説リストが入ります。</p>
+      </section>
+    </div>
+
+    <aside class="story-tabs" aria-label="地方を選択">
+      <button class="story-tab active" type="button" data-story-tab="kanto"><span>KANTO</span><small>カントー編</small></button>
+      <button class="story-tab" type="button" data-story-tab="johto"><span>JOHTO</span><small>ジョウト編</small></button>
+      <button class="story-tab" type="button" data-story-tab="hoenn"><span>HOENN</span><small>ホウエン編</small></button>
+      <button class="story-tab" type="button" data-story-tab="sinnoh"><span>SINNOH</span><small>シンオウ編</small></button>
+      <div class="story-help">各話は別タブで開きます。<br>本文最下部まで読むと読了として記録されます。</div>
+    </aside>
+  </div>
+</section>
+
+<!-- CHARACTER -->
+
+<section class="page-panel" id="character" data-page-panel="character">
+  <p class="eyebrow">CHARACTER</p>
+  <h2>登場人物</h2>
+
+  <div class="character-intro">
+    地方ごとに登場人物を並べたキャラクターセレクトです。
+    カードを選ぶと、各キャラクターの個別プロフィールへ移動します。
+  </div>
+
+  <div class="character-select-title">
+    <div>
+      <p class="eyebrow">SELECT CHARACTER</p>
+      <h3>キャラクターを選択</h3>
+    </div>
+    <p>SELECT → PROFILE</p>
+  </div>
+
+  <section class="character-region" data-character-region="kanto">
+    <div class="character-region-heading">
+      <h4>KANTO</h4>
+      <small>カントー編</small>
+    </div>
+    <div class="character-grid">
+      <a class="character-card" href="characters/orange.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>オレンジ</strong><span>ORANGE</span></div>
+      </a>
+      <a class="character-card" href="characters/kayanite.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>カイヤナイト</strong><span>KYANITE</span></div>
+      </a>
+      <a class="character-card" href="characters/turquoise.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>ターコイズ</strong><span>TURQUOISE</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="character-region" data-character-region="johto">
+    <div class="character-region-heading">
+      <h4>JOHTO</h4>
+      <small>ジョウト編</small>
+    </div>
+    <div class="character-grid">
+      <a class="character-card" href="characters/coral.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>コーラル</strong><span>CORAL</span></div>
+      </a>
+      <a class="character-card" href="characters/quartz.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>クォーツ</strong><span>QUARTZ</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="character-region" data-character-region="hoenn">
+    <div class="character-region-heading">
+      <h4>HOENN</h4>
+      <small>ホウエン編</small>
+    </div>
+    <div class="character-grid">
+      <a class="character-card" href="characters/charoite.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>チャロアイト</strong><span>CHAROITE</span></div>
+      </a>
+      <a class="character-card" href="characters/peridot.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>ペリドット</strong><span>PERIDOT</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="character-region" data-character-region="sinnoh">
+    <div class="character-region-heading">
+      <h4>SINNOH</h4>
+      <small>シンオウ編</small>
+    </div>
+    <div class="character-grid">
+      <a class="character-card" href="characters/tourmaline.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>トルマリン</strong><span>TOURMALINE</span></div>
+      </a>
+      <a class="character-card" href="characters/adularia.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>アデュレリア</strong><span>ADULARIA</span></div>
+      </a>
+      <a class="character-card" href="characters/cornelupine.html">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>コーネルピン</strong><span>CORNELUPINE</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="character-region" data-character-region="unknown">
+    <div class="character-region-heading">
+      <h4>？？？</h4>
+      <small>UNKNOWN</small>
+    </div>
+    <div class="character-grid">
+      <a class="character-card unknown" href="#">
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>？？？</strong><span>UNKNOWN</span></div>
+      </a>
+      <a class="character-card unknown" href="#">
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>？？？</strong><span>UNKNOWN</span></div>
+      </a>
+      <a class="character-card unknown" href="#">
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>？？？</strong><span>UNKNOWN</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="sub-character-wrap">
+    <div class="character-region-heading">
+      <div>
+        <p class="eyebrow">SUB CHARACTER</p>
+        <h4>サブキャラクター</h4>
+      </div>
+      <small>3 SLOTS</small>
+    </div>
+    <div class="character-grid sub-character-grid">
+      <a class="character-card" href="#">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>SUB CHARACTER 01</strong><span>PROFILE</span></div>
+      </a>
+      <a class="character-card" href="#">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>SUB CHARACTER 02</strong><span>PROFILE</span></div>
+      </a>
+      <a class="character-card" href="#">
+        <span class="select-mark">SELECT</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body"><strong>SUB CHARACTER 03</strong><span>PROFILE</span></div>
+      </a>
+    </div>
+  </section>
+</section>
+
+
+<!-- EXTRA -->
+
+<section class="page-panel" id="extra" data-page-panel="extra">
+  <p class="eyebrow">EXTRA</p>
+  <h2>おまけ・資料</h2>
+
+  <div class="extra-intro">
+    キャラクター同士の関係性を比べたり、イラストを眺めたりするための遊び場です。
+  </div>
+
+  <!-- PAIR DATABASE -->
+  <section class="extra-section" id="pair-database">
+    <div class="extra-title-row">
+      <div>
+        <p class="eyebrow">COMBI / PAIR DATABASE</p>
+        <h3>コンビ・ペアデータベース</h3>
+      </div>
+      <p>SELECT 2 CHARACTERS</p>
+    </div>
+
+    <div class="pair-selector">
+      <div class="select-box">
+        <label for="pair-a">CHARACTER A</label>
+        <select id="pair-a"></select>
+      </div>
+
+      <button class="pair-swap" id="pair-swap" type="button" aria-label="キャラクターを入れ替える">⇄</button>
+
+      <div class="select-box">
+        <label for="pair-b">CHARACTER B</label>
+        <select id="pair-b"></select>
+      </div>
+    </div>
+
+    <div class="pair-result">
+      <article class="pair-person">
+        <h4 id="pair-name-a">オレンジ</h4>
+        <span class="latin" id="pair-latin-a">ORANGE</span>
+        <dl>
+          <div><dt>HEIGHT</dt><dd id="pair-height-a">146cm</dd></div>
+          <div><dt>CALLS THE OTHER</dt><dd id="pair-call-a">—</dd></div>
+          <div><dt>IMPRESSION</dt><dd id="pair-impression-a">—</dd></div>
+        </dl>
+      </article>
+
+      <div class="height-compare" aria-label="身長比較">
+        <span class="height-scale">HEIGHT COMPARE</span>
+        <div class="height-figure a" id="height-figure-a"></div>
+        <div class="height-figure" id="height-figure-b"></div>
+      </div>
+
+      <article class="pair-person">
+        <h4 id="pair-name-b">カイヤナイト</h4>
+        <span class="latin" id="pair-latin-b">KYANITE</span>
+        <dl>
+          <div><dt>HEIGHT</dt><dd id="pair-height-b">160cm</dd></div>
+          <div><dt>CALLS THE OTHER</dt><dd id="pair-call-b">—</dd></div>
+          <div><dt>IMPRESSION</dt><dd id="pair-impression-b">—</dd></div>
+        </dl>
+      </article>
+
+      <div class="pair-summary">
+        <dl class="pair-summary-grid">
+          <dt>PAIR</dt><dd id="pair-label">オレンジ × カイヤナイト</dd>
+          <dt>RELATION</dt><dd id="pair-relation">幼馴染</dd>
+          <dt>FRIENDSHIP</dt>
+          <dd>
+            <div class="friendship-meter">
+              <div class="friendship-bar"><i class="friendship-fill" id="friendship-fill"></i></div>
+              <strong id="friendship-text">—</strong>
+            </div>
+          </dd>
+          <dt>MEMO</dt><dd id="pair-memo">データを選択してください。</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="extra-section" id="gallery">
+    <div class="extra-title-row">
+      <div>
+        <p class="eyebrow">GALLERY</p>
+        <h3>ギャラリー</h3>
+      </div>
+      <p>ILLUSTRATION ARCHIVE</p>
+    </div>
+
+    <div class="gallery-controls">
+      <button class="gallery-filter active" type="button" data-gallery-filter="all">ALL</button>
+      <button class="gallery-filter" type="button" data-gallery-filter="kanto">KANTO</button>
+      <button class="gallery-filter" type="button" data-gallery-filter="johto">JOHTO</button>
+      <button class="gallery-filter" type="button" data-gallery-filter="hoenn">HOENN</button>
+      <button class="gallery-filter" type="button" data-gallery-filter="sinnoh">SINNOH</button>
+      <button class="gallery-filter" type="button" data-gallery-filter="other">OTHER</button>
+    </div>
+
+    <div class="gallery-grid">
+      <a class="gallery-item" href="#" data-gallery-category="kanto">
+        <div class="gallery-thumb">IMAGE 01</div>
+        <div class="gallery-caption"><strong>作品タイトル</strong><span>KANTO / ILLUSTRATION</span></div>
+      </a>
+      <a class="gallery-item" href="#" data-gallery-category="kanto">
+        <div class="gallery-thumb">IMAGE 02</div>
+        <div class="gallery-caption"><strong>作品タイトル</strong><span>KANTO / ILLUSTRATION</span></div>
+      </a>
+      <a class="gallery-item" href="#" data-gallery-category="johto">
+        <div class="gallery-thumb">IMAGE 03</div>
+        <div class="gallery-caption"><strong>作品タイトル</strong><span>JOHTO / ILLUSTRATION</span></div>
+      </a>
+      <a class="gallery-item" href="#" data-gallery-category="hoenn">
+        <div class="gallery-thumb">IMAGE 04</div>
+        <div class="gallery-caption"><strong>作品タイトル</strong><span>HOENN / ILLUSTRATION</span></div>
+      </a>
+      <a class="gallery-item" href="#" data-gallery-category="sinnoh">
+        <div class="gallery-thumb">IMAGE 05</div>
+        <div class="gallery-caption"><strong>作品タイトル</strong><span>SINNOH / ILLUSTRATION</span></div>
+      </a>
+      <a class="gallery-item" href="#" data-gallery-category="other">
+        <div class="gallery-thumb">IMAGE 06</div>
+        <div class="gallery-caption"><strong>作品タイトル</strong><span>OTHER / ILLUSTRATION</span></div>
+      </a>
+    </div>
+
+    <p class="gallery-note">※ 実際の画像を入れたあと、クリックで拡大表示するライトボックス機能も追加できます。</p>
+  </section>
+</section>
+
+
+<!-- SNS -->
+<section class="page-panel" id="sns-page" data-page-panel="sns">
+  <p class="eyebrow">SNS</p><h2>LINK</h2>
+  <p style="margin-top:20px;">各SNSへのリンクをここに追加します。</p>
+</section>
+
+<footer id="sns">
+  <strong>POKÉMON SPECIAL<br>NEXT GENERATION</strong>
+  <p>Personal Fan Project</p>
+  <div class="sns-links">
+    <a href="#" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+    <a href="#" target="_blank" rel="noopener noreferrer">pixiv</a>
+    <a href="#" target="_blank" rel="noopener noreferrer">YouTube</a>
+  </div>
+  <small>© 2026 Personal Fan Project</small>
+</footer>
+
+<script>
+  const nav=document.getElementById("global-nav");
+  const menuToggle=document.getElementById("menu-toggle");
+  const homeContent=document.getElementById("home-content");
+  const pagePanels=document.querySelectorAll("[data-page-panel]");
+  const navLinks=document.querySelectorAll("[data-page]");
+
+  function showPage(page){
+    if(page==="top"){
+      homeContent.style.display="block";
+      pagePanels.forEach(panel=>panel.classList.remove("active"));
+    }else{
+      homeContent.style.display="none";
+      pagePanels.forEach(panel=>panel.classList.toggle("active",panel.dataset.pagePanel===page));
+    }
+    navLinks.forEach(link=>link.classList.toggle("active",link.dataset.page===page));
+    nav.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded","false");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  navLinks.forEach(link=>link.addEventListener("click",event=>{
+    event.preventDefault();showPage(link.dataset.page);
+  }));
+
+  document.querySelectorAll("[data-page-link]").forEach(link=>link.addEventListener("click",event=>{
+    event.preventDefault();showPage(link.dataset.pageLink);
+  }));
+
+  menuToggle.addEventListener("click",()=>{
+    const isOpen=nav.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded",String(isOpen));
+  });
+
+  const storyTabs=document.querySelectorAll("[data-story-tab]");
+  const storyRegions=document.querySelectorAll("[data-story-region]");
+  function showStoryRegion(region){
+    storyTabs.forEach(tab=>tab.classList.toggle("active",tab.dataset.storyTab===region));
+    storyRegions.forEach(panel=>panel.classList.toggle("active",panel.dataset.storyRegion===region));
+  }
+  storyTabs.forEach(tab=>tab.addEventListener("click",()=>showStoryRegion(tab.dataset.storyTab)));
+
+  const PROGRESS_KEY="psng-reading-progress-v1";
+  function loadReadingProgress(){
+    try{return JSON.parse(localStorage.getItem(PROGRESS_KEY))||{}}
+    catch{return{}}
+  }
+
+  function renderReadingProgress(){
+    const progress=loadReadingProgress();
+
+    document.querySelectorAll("[data-episode-region]").forEach(link=>{
+      const region=link.dataset.episodeRegion;
+      const episode=Number(link.dataset.episode);
+      const read=progress[region]?.read?.includes(episode)||false;
+      link.classList.toggle("read",read);
+      const state=link.querySelector(".ep-state");
+      if(state)state.textContent=read?"READ ✓":"OPEN ↗";
+    });
+
+    document.querySelectorAll(".region-card[data-region]").forEach(card=>{
+      const region=card.dataset.region;
+      const total=Number(card.dataset.total||0);
+      const data=progress[region]||{read:[],furthest:0,title:""};
+      const count=data.read?.length||0;
+      const percent=total?Math.round(count/total*100):0;
+
+      card.classList.toggle("current",count>0);
+      const fill=card.querySelector(".progress-fill");
+      const pct=card.querySelector(".progress b");
+      const loc=card.querySelector(".location strong");
+      const status=card.querySelector(".status");
+      const icon=card.querySelector(".region-icon");
+
+      if(fill)fill.style.width=percent+"%";
+      if(pct)pct.textContent=percent+"%";
+      if(loc)loc.textContent=data.furthest?`第${data.furthest}話${data.title?`「${data.title}」`:""}`:"未読";
+      if(status)status.textContent=(total&&percent===100)?"COMPLETE":count?"NOW READING":"NOT STARTED";
+      if(icon)icon.textContent=count?"◉":"○";
+    });
+  }
+
+  document.querySelectorAll(".region-card[data-region]").forEach(card=>card.addEventListener("click",event=>{
+    event.preventDefault();
+    showPage("story");
+    showStoryRegion(card.dataset.region);
+  }));
+
+  window.addEventListener("storage",renderReadingProgress);
+  window.addEventListener("focus",renderReadingProgress);
+
+
+  /* EXTRA — PAIR DATABASE */
+  const pairCharacters = {
+    orange:     {name:"オレンジ", latin:"ORANGE", height:146},
+    kayanite:   {name:"カイヤナイト", latin:"KYANITE", height:160},
+    turquoise:  {name:"ターコイズ", latin:"TURQUOISE", height:160},
+    coral:      {name:"コーラル", latin:"CORAL", height:170},
+    quartz:     {name:"クォーツ", latin:"QUARTZ", height:172},
+    charoite:   {name:"チャロアイト", latin:"CHAROITE", height:157},
+    peridot:    {name:"ペリドット", latin:"PERIDOT", height:160},
+    tourmaline: {name:"トルマリン", latin:"TOURMALINE", height:150},
+    adularia:   {name:"アデュレリア", latin:"ADULARIA", height:143},
+    cornelupine:{name:"コーネルピン", latin:"CORNELUPINE", height:157}
+  };
+
+  /*
+   * 関係データは、現時点で明示されている組み合わせだけ仮入力。
+   * 未入力ペアは「データ準備中」と表示。
+   */
+  const pairData = {
+    // アデュレリア × チャロアイト
+    "adularia|charoite":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × コーラル
+    "adularia|coral":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × コーネルピン
+    "adularia|cornelupine":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × カイヤナイト
+    "adularia|kayanite":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × オレンジ
+    "adularia|orange":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × ペリドット
+    "adularia|peridot":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × クォーツ
+    "adularia|quartz":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × トルマリン
+    "adularia|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // アデュレリア × ターコイズ
+    "adularia|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × コーラル
+    "charoite|coral":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × コーネルピン
+    "charoite|cornelupine":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × カイヤナイト
+    "charoite|kayanite":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × オレンジ
+    "charoite|orange":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × ペリドット
+    "charoite|peridot":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × クォーツ
+    "charoite|quartz":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × トルマリン
+    "charoite|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // チャロアイト × ターコイズ
+    "charoite|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーラル × コーネルピン
+    "coral|cornelupine":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーラル × カイヤナイト
+    "coral|kayanite":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーラル × オレンジ
+    "coral|orange":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーラル × ペリドット
+    "coral|peridot":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーラル × クォーツ
+    "coral|quartz":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーラル × トルマリン
+    "coral|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーラル × ターコイズ
+    "coral|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーネルピン × カイヤナイト
+    "cornelupine|kayanite":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーネルピン × オレンジ
+    "cornelupine|orange":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーネルピン × ペリドット
+    "cornelupine|peridot":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーネルピン × クォーツ
+    "cornelupine|quartz":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーネルピン × トルマリン
+    "cornelupine|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // コーネルピン × ターコイズ
+    "cornelupine|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // カイヤナイト × オレンジ
+    "kayanite|orange":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // カイヤナイト × ペリドット
+    "kayanite|peridot":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // カイヤナイト × クォーツ
+    "kayanite|quartz":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // カイヤナイト × トルマリン
+    "kayanite|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // カイヤナイト × ターコイズ
+    "kayanite|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // オレンジ × ペリドット
+    "orange|peridot":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // オレンジ × クォーツ
+    "orange|quartz":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // オレンジ × トルマリン
+    "orange|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // オレンジ × ターコイズ
+    "orange|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // ペリドット × クォーツ
+    "peridot|quartz":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // ペリドット × トルマリン
+    "peridot|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // ペリドット × ターコイズ
+    "peridot|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // クォーツ × トルマリン
+    "quartz|tourmaline":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // クォーツ × ターコイズ
+    "quartz|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    },
+
+    // トルマリン × ターコイズ
+    "tourmaline|turquoise":{
+      relation:"",
+      friendship:0,
+      aCall:"",
+      bCall:"",
+      aImpression:"",
+      bImpression:"",
+      memo:""
+    }
+
+  };
+
+  function pairKey(a,b){
+    return [a,b].sort().join("|");
+  }
+
+  const pairA = document.getElementById("pair-a");
+  const pairB = document.getElementById("pair-b");
+
+  if(pairA && pairB){
+    Object.entries(pairCharacters).forEach(([id,ch])=>{
+      pairA.insertAdjacentHTML("beforeend", `<option value="${id}">${ch.name}</option>`);
+      pairB.insertAdjacentHTML("beforeend", `<option value="${id}">${ch.name}</option>`);
+    });
+
+    pairA.value="orange";
+    pairB.value="kayanite";
+
+    function renderPair(){
+      let aId=pairA.value, bId=pairB.value;
+      if(aId===bId){
+        const next=Object.keys(pairCharacters).find(id=>id!==aId);
+        pairB.value=next;
+        bId=next;
+      }
+
+      const a=pairCharacters[aId], b=pairCharacters[bId];
+      const raw=pairData[pairKey(aId,bId)];
+      const reversed = raw && pairKey(aId,bId).split("|")[0] !== aId;
+
+      const data = raw ? {
+        relation:raw.relation,
+        friendship:raw.friendship,
+        aCall:reversed?raw.bCall:raw.aCall,
+        bCall:reversed?raw.aCall:raw.bCall,
+        aImpression:reversed?raw.bImpression:raw.aImpression,
+        bImpression:reversed?raw.aImpression:raw.bImpression,
+        memo:raw.memo
+      } : null;
+
+      document.getElementById("pair-name-a").textContent=a.name;
+      document.getElementById("pair-latin-a").textContent=a.latin;
+      document.getElementById("pair-height-a").textContent=a.height+"cm";
+      document.getElementById("pair-name-b").textContent=b.name;
+      document.getElementById("pair-latin-b").textContent=b.latin;
+      document.getElementById("pair-height-b").textContent=b.height+"cm";
+      document.getElementById("pair-label").textContent=`${a.name} × ${b.name}`;
+
+      const maxHeight=180;
+      document.getElementById("height-figure-a").style.height=(a.height/maxHeight*210)+"px";
+      document.getElementById("height-figure-b").style.height=(b.height/maxHeight*210)+"px";
+
+      if(data){
+        document.getElementById("pair-call-a").textContent=data.aCall;
+        document.getElementById("pair-call-b").textContent=data.bCall;
+        document.getElementById("pair-impression-a").textContent=data.aImpression;
+        document.getElementById("pair-impression-b").textContent=data.bImpression;
+        document.getElementById("pair-relation").textContent=data.relation;
+        document.getElementById("friendship-fill").style.width=data.friendship+"%";
+        document.getElementById("friendship-text").textContent=data.friendship+"%";
+        document.getElementById("pair-memo").textContent=data.memo;
+      }else{
+        document.getElementById("pair-call-a").textContent="データ準備中";
+        document.getElementById("pair-call-b").textContent="データ準備中";
+        document.getElementById("pair-impression-a").textContent="データ準備中";
+        document.getElementById("pair-impression-b").textContent="データ準備中";
+        document.getElementById("pair-relation").textContent="データ準備中";
+        document.getElementById("friendship-fill").style.width="0%";
+        document.getElementById("friendship-text").textContent="—";
+        document.getElementById("pair-memo").textContent="この組み合わせの関係データはまだ登録されていません。";
+      }
+    }
+
+    pairA.addEventListener("change",renderPair);
+    pairB.addEventListener("change",renderPair);
+    document.getElementById("pair-swap").addEventListener("click",()=>{
+      const tmp=pairA.value; pairA.value=pairB.value; pairB.value=tmp; renderPair();
+    });
+    renderPair();
+  }
+
+  /* EXTRA — GALLERY FILTER */
+  const galleryFilters=document.querySelectorAll("[data-gallery-filter]");
+  const galleryItems=document.querySelectorAll("[data-gallery-category]");
+
+  galleryFilters.forEach(button=>button.addEventListener("click",()=>{
+    const filter=button.dataset.galleryFilter;
+    galleryFilters.forEach(b=>b.classList.toggle("active",b===button));
+    galleryItems.forEach(item=>{
+      item.style.display=(filter==="all"||item.dataset.galleryCategory===filter)?"block":"none";
+    });
+  }));
+
+
+  renderReadingProgress();
+  showPage("top");
+</script>
+</body>
+</html>

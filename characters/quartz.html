@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>クォーツ | POKÉMON SPECIAL NEXT GENERATION</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f1eb;--bg-warm:#ede8df;--ink:#2c2520;--ink-light:#6b6056;
+  --accent:#c0392b;--card-bg:#fffdf8;--border:#d4cdc4;--shadow:rgba(44,37,32,.08);
+  --radius:12px;--content-width:980px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Alegreya Sans","Noto Sans JP","Yu Gothic",sans-serif;line-height:1.75
+}
+a{color:inherit}
+.hero{
+  padding:34px 24px 28px;text-align:center;
+  background:linear-gradient(175deg,#e8ddd0,#f4f1eb 60%,#dfe6e0);
+  border-bottom:1px solid var(--border)
+}
+.hero small{display:block;letter-spacing:.22em;opacity:.48}
+.hero strong{display:block;margin-top:4px;font-family:"Playfair Display",serif;font-size:18px;letter-spacing:.06em}
+.back-site{
+  display:inline-block;margin-top:12px;color:var(--accent);font-size:12px;text-decoration:none;border-bottom:1px solid transparent
+}
+.back-site:hover{border-bottom-color:var(--accent)}
+main{max-width:var(--content-width);margin:0 auto;padding:46px 68px 90px}
+.profile-paper{
+  position:relative;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);
+  padding:42px;box-shadow:0 4px 20px var(--shadow)
+}
+.profile-paper::before{content:"";position:absolute;inset:12px;border:1px solid rgba(212,205,196,.5);border-radius:9px;pointer-events:none}
+.profile-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(250px,.8fr) minmax(0,1.2fr);gap:42px}
+.character-art{
+  position:relative;min-height:520px;border:1px solid var(--border);border-radius:10px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(192,57,43,.07),rgba(76,132,108,.08)),var(--bg)
+}
+.character-art::before{
+  content:"";position:absolute;left:50%;bottom:-4%;transform:translateX(-50%);
+  width:56%;height:83%;border-radius:50% 50% 18% 18%;background:linear-gradient(#bbb4aa,#8d867e);opacity:.42
+}
+.character-art::after{
+  content:"FULL BODY ART";position:absolute;right:16px;bottom:14px;font-size:10px;letter-spacing:.14em;opacity:.3
+}
+.name-block{position:relative;z-index:1;margin-top:18px}
+.name-block small{font-size:10px;letter-spacing:.22em;opacity:.45}
+.name-block h1{font-family:"Playfair Display","Noto Sans JP",serif;font-size:34px;margin:3px 0 0;line-height:1.3}
+.profile-label{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.profile-right h2{font-family:"Playfair Display",serif;font-size:28px;margin:4px 0 20px}
+.basic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.basic-item{padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+.basic-item span{display:block;font-size:9px;letter-spacing:.13em;opacity:.45}
+.basic-item strong{display:block;margin-top:2px;font-size:13px}
+.profile-section{padding-top:20px;margin-top:20px;border-top:1px dashed var(--border)}
+.profile-section h3{font-family:"Playfair Display","Noto Sans JP",serif;font-size:17px;margin-bottom:8px}
+.profile-section p{font-size:14px;opacity:.82}
+.party-placeholder{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.party-slot{padding:13px 10px;text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:11px;opacity:.58}
+
+/* SIDE ARROWS */
+.character-arrow{
+  position:fixed;top:50%;transform:translateY(-50%);z-index:50;
+  width:54px;height:76px;display:grid;place-items:center;text-decoration:none;color:var(--accent);
+  background:rgba(255,253,248,.93);border:1px solid var(--border);box-shadow:0 4px 18px var(--shadow);
+  transition:.2s
+}
+.character-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.05)}
+.character-arrow.prev{left:14px;border-radius:0 12px 12px 0}
+.character-arrow.next{right:14px;border-radius:12px 0 0 12px}
+.character-arrow span{font-size:28px;line-height:1}
+.character-arrow small{position:absolute;bottom:7px;font-size:8px;letter-spacing:.1em;opacity:.5}
+
+/* ALL CHARACTER ICONS */
+.character-switcher{
+  position:relative;z-index:1;margin-top:38px;padding-top:28px;border-top:2px solid var(--border)
+}
+.switcher-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:13px}
+.switcher-head strong{font-family:"Playfair Display",serif;letter-spacing:.08em}
+.switcher-head span{font-size:10px;opacity:.42;letter-spacing:.1em}
+.icon-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:7px}
+.character-icon{
+  display:block;text-decoration:none;text-align:center;border:1px solid var(--border);border-radius:8px;overflow:hidden;
+  background:#fff;transition:.18s
+}
+.character-icon:hover,.character-icon.current{transform:translateY(-3px);border-color:var(--accent)}
+.character-icon.current{box-shadow:0 2px 10px rgba(192,57,43,.12)}
+.icon-face{
+  position:relative;aspect-ratio:1/1;background:linear-gradient(135deg,#f4f1eb,#e7e1d8);
+  border-bottom:1px solid var(--border)
+}
+.icon-face::before{
+  content:"";position:absolute;left:50%;bottom:-10%;transform:translateX(-50%);
+  width:58%;height:75%;border-radius:50% 50% 18% 18%;background:#a49d94;opacity:.45
+}
+.character-icon b{display:block;padding:6px 3px;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+@media(max-width:820px){
+  main{padding:34px 54px 70px}
+  .profile-grid{grid-template-columns:1fr;gap:28px}
+  .character-art{min-height:420px}
+  .basic-grid{grid-template-columns:repeat(2,1fr)}
+  .icon-grid{grid-template-columns:repeat(5,1fr)}
+}
+@media(max-width:560px){
+  main{padding:24px 42px 60px}
+  .profile-paper{padding:28px 20px}
+  .character-arrow{width:38px;height:62px}
+  .character-arrow.prev{left:0}.character-arrow.next{right:0}
+  .character-arrow span{font-size:22px}
+  .party-placeholder{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <small>CHARACTER PROFILE / JOHTO</small>
+  <strong>POKÉMON SPECIAL NEXT GENERATION</strong>
+  <a class="back-site" href="../index.html#character">← CHARACTER SELECT</a>
+</header>
+
+<a class="character-arrow prev" href="coral.html" aria-label="前のキャラクター：コーラル">
+  <span>‹</span><small>PREV</small>
+</a>
+<a class="character-arrow next" href="charoite.html" aria-label="次のキャラクター：チャロアイト">
+  <span>›</span><small>NEXT</small>
+</a>
+
+<main>
+  <article class="profile-paper">
+    <div class="profile-grid">
+      <div class="profile-left">
+        <div class="character-art"></div>
+        <div class="name-block">
+          <small>QUARTZ / JOHTO</small>
+          <h1>クォーツ</h1>
+        </div>
+      </div>
+
+      <div class="profile-right">
+        <span class="profile-label">PROFILE</span>
+        <h2>QUARTZ</h2>
+
+        <div class="basic-grid">
+          <div class="basic-item"><span>AGE</span><strong>15</strong></div>
+          <div class="basic-item"><span>GENDER</span><strong>男</strong></div>
+          <div class="basic-item"><span>FROM</span><strong>トキワシティ</strong></div>
+          <div class="basic-item"><span>HEIGHT</span><strong>172cm</strong></div>
+        </div>
+
+        <section class="profile-section">
+          <h3>CHARACTER</h3>
+          <p>刹那的に生きる享楽主義者。思ったことをそのまま口にする裏表のなさと、自分の美貌や性格をよく理解した立ち回りが特徴。</p>
+        </section>
+
+        <section class="profile-section">
+          <h3>POKÉMON</h3>
+          <p>手持ちポケモン：後で追加</p>
+          <div class="party-placeholder">
+            <div class="party-slot">POKÉMON 01</div>
+            <div class="party-slot">POKÉMON 02</div>
+            <div class="party-slot">POKÉMON 03</div>
+            <div class="party-slot">POKÉMON 04</div>
+            <div class="party-slot">POKÉMON 05</div>
+            <div class="party-slot">POKÉMON 06</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    
+<div class="character-switcher">
+  <div class="switcher-head">
+    <strong>ALL CHARACTERS</strong>
+    <span>SELECT CHARACTER</span>
+  </div>
+  <div class="icon-grid">
+    <a class="character-icon" href="orange.html" title="オレンジ"><div class="icon-face"></div><b>オレンジ</b></a>
+<a class="character-icon" href="kayanite.html" title="カイヤナイト"><div class="icon-face"></div><b>カイヤナイト</b></a>
+<a class="character-icon" href="turquoise.html" title="ターコイズ"><div class="icon-face"></div><b>ターコイズ</b></a>
+<a class="character-icon" href="coral.html" title="コーラル"><div class="icon-face"></div><b>コーラル</b></a>
+<a class="character-icon current" href="quartz.html" title="クォーツ"><div class="icon-face"></div><b>クォーツ</b></a>
+<a class="character-icon" href="charoite.html" title="チャロアイト"><div class="icon-face"></div><b>チャロアイト</b></a>
+<a class="character-icon" href="peridot.html" title="ペリドット"><div class="icon-face"></div><b>ペリドット</b></a>
+<a class="character-icon" href="tourmaline.html" title="トルマリン"><div class="icon-face"></div><b>トルマリン</b></a>
+<a class="character-icon" href="adularia.html" title="アデュレリア"><div class="icon-face"></div><b>アデュレリア</b></a>
+<a class="character-icon" href="cornelupine.html" title="コーネルピン"><div class="icon-face"></div><b>コーネルピン</b></a>
+  </div>
+</div>
+
+  </article>
+</main>
+
+</body>
+</html>
