@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENTER | POKÉMON SPECIAL NEXT GENERATION</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    :root{
+      --bg:#f4f1eb;--ink:#2c2520;--accent:#c0392b;
+      --card-bg:#fffdf8;--border:#d4cdc4;--shadow:rgba(44,37,32,.08)
+    }
+    body{
+      margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;
+      color:var(--ink);font-family:"Alegreya Sans","Noto Sans JP",sans-serif;
+      background:linear-gradient(175deg,#e8ddd0 0%,#f4f1eb 60%,#dfe6e0 100%);
+    }
+    .enter-card{
+      width:min(560px,100%);padding:48px 42px;text-align:center;
+      background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+      box-shadow:0 8px 30px var(--shadow);
+    }
+    .eyebrow{font-size:11px;letter-spacing:.28em;opacity:.5;margin:0 0 10px}
+    h1{
+      margin:0;font-family:"Playfair Display",serif;font-size:clamp(32px,7vw,52px);
+      line-height:1.08;letter-spacing:.04em
+    }
+    .tagline{margin:20px 0 30px;font-size:14px;letter-spacing:.16em;opacity:.68}
+    label{
+      display:block;text-align:left;margin-bottom:7px;font-size:10px;
+      letter-spacing:.16em;opacity:.5
+    }
+    input{
+      width:100%;padding:13px 14px;border:1px solid var(--border);
+      border-radius:8px;background:#fff;color:var(--ink);font:inherit
+    }
+    button{
+      width:100%;margin-top:12px;padding:12px 16px;border:1px solid var(--accent);
+      border-radius:8px;background:var(--accent);color:#fff;font:inherit;
+      font-weight:700;letter-spacing:.16em;cursor:pointer
+    }
+    button:hover{filter:brightness(1.04)}
+    #password-message{min-height:1.7em;margin:10px 0 0;color:var(--accent);font-size:12px}
+    .note{margin-top:24px;font-size:10px;opacity:.38;letter-spacing:.06em}
+  </style>
+</head>
+<body>
+  <main class="enter-card">
+    <p class="eyebrow">PERSONAL ARCHIVE</p>
+    <h1>POKÉMON SPECIAL<br>NEXT GENERATION</h1>
+    <p class="tagline">約束を果たす旅へ。</p>
+
+    <form id="password-form">
+      <label for="password">PASSWORD</label>
+      <input id="password" type="password" autocomplete="current-password" autofocus>
+      <button type="submit">ENTER</button>
+      <p id="password-message" aria-live="polite"></p>
+    </form>
+
+    <p class="note">PASSWORD REQUIRED</p>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>
