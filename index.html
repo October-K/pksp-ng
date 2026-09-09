@@ -1381,7 +1381,7 @@
 
       if(fill)fill.style.width=percent+"%";
       if(pct)pct.textContent=percent+"%";
-      if(loc)loc.textContent=data.furthest?`第${data.furthest}話${data.title?`「${data.title}」`:""}`:"未読";
+      if(loc)loc.textContent=data.furthest?`第${data.furthest}話${data.title?`「${data.title}」`:""}`:"はじめから";
       if(status)status.textContent=(total&&percent===100)?"COMPLETE":count?"NOW READING":"NOT STARTED";
       if(icon)icon.textContent=count?"◉":"○";
     });
