@@ -1374,8 +1374,39 @@
 
   const PROGRESS_KEY="psng-reading-progress-v1";
 
+    
+    document.querySelectorAll("[data-episode-region]").forEach(link=>{
+      const region=link.dataset.episodeRegion;
+      const episode=Number(link.dataset.episode);
+      const read=progress[region]?.read?.includes(episode)||false;
+      link.classList.toggle("read",read);
+      const state=link.querySelector(".ep-state");
+      if(state)state.textContent=read?"READ ✓":"OPEN ↗";
+    });
 
-/* =========================
+    document.querySelectorAll(".region-card[data-region]").forEach(card=>{
+      const region=card.dataset.region;
+      const total=Number(card.dataset.total||0);
+      const data=progress[region]||{read:[],furthest:0,title:""};
+      const count=data.read?.length||0;
+      const percent=total?Math.round(count/total*100):0;
+
+      card.classList.toggle("current",count>0);
+      const fill=card.querySelector(".progress-fill");
+      const pct=card.querySelector(".progress b");
+      const loc=card.querySelector(".location strong");
+      const status=card.querySelector(".status");
+      const icon=card.querySelector(".region-icon");
+
+      if(fill)fill.style.width=percent+"%";
+      if(pct)pct.textContent=percent+"%";
+      if(loc)loc.textContent=data.furthest?`第${data.furthest}話${data.title?`「${data.title}」`:""}`:"はじめから";
+      if(status)status.textContent=(total&&percent===100)?"COMPLETE":count?"NOW READING":"NOT STARTED";
+      if(icon)icon.textContent=count?"◉":"○";
+    });
+  }
+
+  /* =========================
    SPOILER / UNLOCK SETTINGS
    ここだけ変更すれば解禁条件を変えられます
 ========================= */
@@ -1442,156 +1473,124 @@
    SECRET CHARACTER UNLOCK
 ========================= */
 
-function hasReadEpisode(progress, region, episode){
-  return progress[region]?.read?.includes(episode) || false;
-}
-const CLAN_ACHIEVEMENT_KEY =
-  "psng-clan-order-achievement-v1";
-function renderSecretCharacters(){
-  const progress = loadReadingProgress();
+  function hasReadEpisode(progress, region, episode){
+    return progress[region]?.read?.includes(episode) || false;
+  }
+  const CLAN_ACHIEVEMENT_KEY =
+    "psng-clan-order-achievement-v1";
+  function renderSecretCharacters(){
+    const progress = loadReadingProgress();
 
   /* Clan Order 名称の解禁 */
-
-  const requirements =
-    UNLOCK_CONFIG.clanOrder.requiredEpisodes;
-  const clanUnlocked =
-    Object.entries(requirements).every(
-      ([region, episode]) =>
-        hasReadEpisode(progress, region, episode)
-    );
-  const clanTitle =
-    document.getElementById("clan-order-title");
-  const clanSubtitle =
-    document.getElementById("clan-order-subtitle");
-  if(clanUnlocked){
-    if(clanTitle){
-      clanTitle.textContent =
-        UNLOCK_CONFIG.clanOrder.label;
+    const requirements =
+      UNLOCK_CONFIG.clanOrder.requiredEpisodes;
+    const clanUnlocked =
+      Object.entries(requirements).every(
+        ([region, episode]) =>
+          hasReadEpisode(progress, region, episode)
+      );
+    const clanTitle =
+      document.getElementById("clan-order-title");
+    const clanSubtitle =
+      document.getElementById("clan-order-subtitle");
+    if(clanUnlocked){
+      if(clanTitle){
+        clanTitle.textContent =
+          UNLOCK_CONFIG.clanOrder.label;
+      }
+      if(clanSubtitle){
+        clanSubtitle.textContent =
+          "CLAN ORDER";
+      }
+    }else{
+      if(clanTitle){
+        clanTitle.textContent = "？？？";
+      }
+      if(clanSubtitle){
+        clanSubtitle.textContent = "UNKNOWN";
+      }
     }
-    if(clanSubtitle){
-      clanSubtitle.textContent =
-        "CLAN ORDER";
-    }
-  }else{
-    if(clanTitle){
-      clanTitle.textContent = "？？？";
-    }
-    if(clanSubtitle){
-      clanSubtitle.textContent = "UNKNOWN";
-    }
-  }
 
   /* 各幹部の解禁 */
-  document
-    .querySelectorAll("[data-secret-character]")
-    .forEach(card=>{
-      const id = card.dataset.secretCharacter;
-      const character = UNLOCK_CONFIG.members[id];
-      if(!character) return;
-      const unlocked =
-        hasReadEpisode(
-          progress,
-          character.region,
-          character.episode
-        );
-      const name =
-        card.querySelector(".character-card-body strong");
-      const latin =
-        card.querySelector(".character-card-body span");
-      const mark =
-        card.querySelector(".select-mark");
-      if(unlocked){
-        card.classList.remove("unknown");
-        card.href = character.href;
-        if(name){
-          name.textContent = character.name;
+    document
+      .querySelectorAll("[data-secret-character]")
+      .forEach(card=>{
+        const id = card.dataset.secretCharacter;
+        const character = UNLOCK_CONFIG.members[id];
+        if(!character) return;
+        const unlocked =
+          hasReadEpisode(
+            progress,
+            character.region,
+            character.episode
+          );
+        const name =
+          card.querySelector(".character-card-body strong");
+        const latin =
+          card.querySelector(".character-card-body span");
+        const mark =
+          card.querySelector(".select-mark");
+        if(unlocked){
+          card.classList.remove("unknown");
+          card.href = character.href;
+          if(name){
+            name.textContent = character.name;
+          }
+          if(latin){
+            latin.textContent = character.latin;
+          }
+          if(mark){
+            mark.textContent = "SELECT";
+          }
+        }else{
+          card.classList.add("unknown");
+          card.href = "#";
+          if(name){
+            name.textContent = "？？？";
+          }
+          if(latin){
+            latin.textContent = "UNKNOWN";
+          }
+          if(mark){
+            mark.textContent = "LOCKED";
+          }
         }
-        if(latin){
-          latin.textContent = character.latin;
-        }
-        if(mark){
-          mark.textContent = "SELECT";
-        }
-      }else{
-        card.classList.add("unknown");
-        card.href = "#";
-        if(name){
-          name.textContent = "？？？";
-        }
-        if(latin){
-          latin.textContent = "UNKNOWN";
-        }
-        if(mark){
-          mark.textContent = "LOCKED";
-        }
-      }
-    });
-  checkClanAchievement(clanUnlocked);
-}
-
-function checkClanAchievement(unlocked){
-  if(!unlocked) return;
-  if(
-    localStorage.getItem(CLAN_ACHIEVEMENT_KEY)
-    === "done"
-  ){
-    return;
+      });
+    checkClanAchievement(clanUnlocked);
   }
-  localStorage.setItem(
-    CLAN_ACHIEVEMENT_KEY,
-    "done"
-  );
-  const toast =
-    document.createElement("div");
-  toast.className = "achievement-toast";
-  toast.innerHTML = `
-    <span>ACHIEVEMENT UNLOCKED</span>
-    <strong>Clan Order</strong>
-    <small>CHARACTER DATABASE UPDATED</small>
-  `;
-  document.body.appendChild(toast);
-  requestAnimationFrame(()=>{
-    toast.classList.add("show");
-  });
-  setTimeout(()=>{
-    toast.classList.remove("show");
+
+  function checkClanAchievement(unlocked){
+    if(!unlocked) return;
+    if(
+      localStorage.getItem(CLAN_ACHIEVEMENT_KEY)
+      === "done"
+    ){
+      return;
+    }
+    localStorage.setItem(
+      CLAN_ACHIEVEMENT_KEY,
+      "done"
+    );
+    const toast =
+      document.createElement("div");
+    toast.className = "achievement-toast";
+    toast.innerHTML = `
+      <span>ACHIEVEMENT UNLOCKED</span>
+      <strong>Clan Order</strong>
+      <small>CHARACTER DATABASE UPDATED</small>
+  `  ;
+    document.body.appendChild(toast);
+    requestAnimationFrame(()=>{
+      toast.classList.add("show");
+    });
     setTimeout(()=>{
-      toast.remove();
-    },500);
-  },4500);
-}
-    
-    document.querySelectorAll("[data-episode-region]").forEach(link=>{
-      const region=link.dataset.episodeRegion;
-      const episode=Number(link.dataset.episode);
-      const read=progress[region]?.read?.includes(episode)||false;
-      link.classList.toggle("read",read);
-      const state=link.querySelector(".ep-state");
-      if(state)state.textContent=read?"READ ✓":"OPEN ↗";
-    });
-
-    document.querySelectorAll(".region-card[data-region]").forEach(card=>{
-      const region=card.dataset.region;
-      const total=Number(card.dataset.total||0);
-      const data=progress[region]||{read:[],furthest:0,title:""};
-      const count=data.read?.length||0;
-      const percent=total?Math.round(count/total*100):0;
-
-      card.classList.toggle("current",count>0);
-      const fill=card.querySelector(".progress-fill");
-      const pct=card.querySelector(".progress b");
-      const loc=card.querySelector(".location strong");
-      const status=card.querySelector(".status");
-      const icon=card.querySelector(".region-icon");
-
-      if(fill)fill.style.width=percent+"%";
-      if(pct)pct.textContent=percent+"%";
-      if(loc)loc.textContent=data.furthest?`第${data.furthest}話${data.title?`「${data.title}」`:""}`:"はじめから";
-      if(status)status.textContent=(total&&percent===100)?"COMPLETE":count?"NOW READING":"NOT STARTED";
-      if(icon)icon.textContent=count?"◉":"○";
-    });
+      toast.classList.remove("show");
+      setTimeout(()=>{
+        toast.remove();
+      },500);
+    },4500);
   }
-
+  
   document.querySelectorAll(".region-card[data-region]").forEach(card=>card.addEventListener("click",event=>{
     event.preventDefault();
     showPage("story");
