@@ -1419,48 +1419,14 @@
 
   const PROGRESS_KEY="psng-reading-progress-v1";
 
-    
-    document.querySelectorAll("[data-episode-region]").forEach(link=>{
-      const region=link.dataset.episodeRegion;
-      const episode=Number(link.dataset.episode);
-      const read=progress[region]?.read?.includes(episode)||false;
-      link.classList.toggle("read",read);
-      const state=link.querySelector(".ep-state");
-      if(state)state.textContent=read?"READ ✓":"OPEN ↗";
-    });
-
-    document.querySelectorAll(".region-card[data-region]").forEach(card=>{
-      const region=card.dataset.region;
-      const total=Number(card.dataset.total||0);
-      const data=progress[region]||{read:[],furthest:0,title:""};
-      const count=data.read?.length||0;
-      const percent=total?Math.round(count/total*100):0;
-
-      card.classList.toggle("current",count>0);
-      const fill=card.querySelector(".progress-fill");
-      const pct=card.querySelector(".progress b");
-      const loc=card.querySelector(".location strong");
-      const status=card.querySelector(".status");
-      const icon=card.querySelector(".region-icon");
-
-      if(fill)fill.style.width=percent+"%";
-      if(pct)pct.textContent=percent+"%";
-      if(loc)loc.textContent=data.furthest?`第${data.furthest}話${data.title?`「${data.title}」`:""}`:"はじめから";
-      if(status)status.textContent=(total&&percent===100)?"COMPLETE":count?"NOW READING":"NOT STARTED";
-      if(icon)icon.textContent=count?"◉":"○";
-    });
-  }
-
   /* =========================
-   SPOILER / UNLOCK SETTINGS
-   ここだけ変更すれば解禁条件を変えられます
-========================= */
+     SPOILER / UNLOCK SETTINGS
+     ここだけ変更すれば解禁条件を変えられます
+  ========================= */
 
   const UNLOCK_CONFIG = {
-
     clanOrder: {
       label: "Clan Order",
-
       requiredEpisodes: {
         kanto: 21,
         johto: 13,
@@ -1468,9 +1434,7 @@
         sinnoh: 23
       }
     },
-
     members: {
-
       kanari: {
         name: "カナリ",
         latin: "KANARI",
@@ -1478,7 +1442,6 @@
         region: "kanto",
         episode: 10
       },
-
       maze: {
         name: "メイズ",
         latin: "MAZE",
@@ -1486,7 +1449,6 @@
         region: "johto",
         episode: 10
       },
-
       chrome: {
         name: "クロム",
         latin: "CHROME",
@@ -1494,7 +1456,6 @@
         region: "hoenn",
         episode: 10
       },
-
       ecru: {
         name: "エクル",
         latin: "ECRU",
@@ -1503,107 +1464,147 @@
         episode: 10
       }
     }
-};
-
+  };
 
   function loadReadingProgress(){
-    try{return JSON.parse(localStorage.getItem(PROGRESS_KEY))||{}}
-    catch{return{}}
+    try{
+      return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {};
+    }catch{
+      return {};
     }
-
+  }
   function renderReadingProgress(){
     const progress=loadReadingProgress();
-  
-  /* =========================
-   SECRET CHARACTER UNLOCK
-========================= */
+    document.querySelectorAll("[data-episode-region]").forEach(link=>{
+      const region=link.dataset.episodeRegion;
+      const episode=Number(link.dataset.episode);
+      const read=progress[region]?.read?.includes(episode)||false;
+      link.classList.toggle("read",read);
+      const state=link.querySelector(".ep-state");
+      if(state) state.textContent=read?"READ ✓":"OPEN ↗";
+    });
+    document.querySelectorAll(".region-card[data-region]").forEach(card=>{
+      const region=card.dataset.region;
+      const total=Number(card.dataset.total||0);
+      const data=progress[region]||{read:[],furthest:0,title:""};
+      const count=data.read?.length||0;
+      const percent=total?Math.round(count/total*100):0;
+      card.classList.toggle("current",count>0);
+      const fill=card.querySelector(".progress-fill");
+      const pct=card.querySelector(".progress b");
+      const loc=card.querySelector(".location strong");
+      const status=card.querySelector(".status");
+      const icon=card.querySelector(".region-icon");
+      if(fill) fill.style.width=percent+"%";
+      if(pct) pct.textContent=percent+"%";
+      if(loc) loc.textContent=data.furthest
+        ? `第${data.furthest}話${data.title?`「${data.title}」`:""}`
+        : "はじめから";
+      if(status) status.textContent=(total&&percent===100)
+        ? "COMPLETE"
+        : count
+          ? "NOW READING"
+          : "NOT STARTED";
 
+      if(icon) icon.textContent=count?"◉":"○";
+    });
+  }
+
+  /* =========================
+     SECRET CHARACTER UNLOCK
+  ========================= */
   function hasReadEpisode(progress, region, episode){
     return progress[region]?.read?.includes(episode) || false;
   }
-  const CLAN_ACHIEVEMENT_KEY =
+  const CLAN_ACHIEVEMENT_KEY=
     "psng-clan-order-achievement-v1";
   function renderSecretCharacters(){
-    const progress = loadReadingProgress();
+    const progress=loadReadingProgress();
 
-  /* Clan Order 名称の解禁 */
-    const requirements =
+    /* Clan Order 名称の解禁 */
+    const requirements=
       UNLOCK_CONFIG.clanOrder.requiredEpisodes;
-    const clanUnlocked =
+    const clanUnlocked=
       Object.entries(requirements).every(
-        ([region, episode]) =>
-          hasReadEpisode(progress, region, episode)
+        ([region,episode])=>
+          hasReadEpisode(progress,region,episode)
       );
-    const clanTitle =
+    const clanTitle=
       document.getElementById("clan-order-title");
-    const clanSubtitle =
+    const clanSubtitle=
       document.getElementById("clan-order-subtitle");
     if(clanUnlocked){
       if(clanTitle){
-        clanTitle.textContent =
+        clanTitle.textContent=
           UNLOCK_CONFIG.clanOrder.label;
       }
       if(clanSubtitle){
-        clanSubtitle.textContent =
+        clanSubtitle.textContent=
           "CLAN ORDER";
       }
     }else{
       if(clanTitle){
-        clanTitle.textContent = "？？？";
+        clanTitle.textContent="？？？";
       }
       if(clanSubtitle){
-        clanSubtitle.textContent = "UNKNOWN";
+        clanSubtitle.textContent="UNKNOWN";
       }
     }
 
-  /* 各幹部の解禁 */
+
+    /* 各幹部の解禁 */
     document
       .querySelectorAll("[data-secret-character]")
       .forEach(card=>{
-        const id = card.dataset.secretCharacter;
-        const character = UNLOCK_CONFIG.members[id];
+        const id=
+          card.dataset.secretCharacter;
+        const character=
+          UNLOCK_CONFIG.members[id];
         if(!character) return;
-        const unlocked =
+        const unlocked=
           hasReadEpisode(
             progress,
             character.region,
             character.episode
           );
-        const name =
-          card.querySelector(".character-card-body strong");
-        const latin =
-          card.querySelector(".character-card-body span");
-        const mark =
+        const name=
+          card.querySelector(
+            ".character-card-body strong"
+          );
+        const latin=
+          card.querySelector(
+            ".character-card-body span"
+          );
+        const mark=
           card.querySelector(".select-mark");
         if(unlocked){
           card.classList.remove("unknown");
-          card.href = character.href;
+          card.href=character.href;
           if(name){
-            name.textContent = character.name;
+            name.textContent=character.name;
           }
           if(latin){
-            latin.textContent = character.latin;
+            latin.textContent=character.latin;
           }
           if(mark){
-            mark.textContent = "SELECT";
+            mark.textContent="SELECT";
           }
         }else{
           card.classList.add("unknown");
-          card.href = "#";
+          card.href="#";
           if(name){
-            name.textContent = "？？？";
+            name.textContent="？？？";
           }
           if(latin){
-            latin.textContent = "UNKNOWN";
+            latin.textContent="UNKNOWN";
           }
           if(mark){
-            mark.textContent = "LOCKED";
+            mark.textContent="LOCKED";
           }
         }
       });
     checkClanAchievement(clanUnlocked);
   }
-
   function checkClanAchievement(unlocked){
     if(!unlocked) return;
     if(
@@ -1616,14 +1617,15 @@
       CLAN_ACHIEVEMENT_KEY,
       "done"
     );
-    const toast =
+    const toast=
       document.createElement("div");
-    toast.className = "achievement-toast";
-    toast.innerHTML = `
+    toast.className=
+      "achievement-toast";
+    toast.innerHTML=`
       <span>ACHIEVEMENT UNLOCKED</span>
       <strong>Clan Order</strong>
       <small>CHARACTER DATABASE UPDATED</small>
-  `  ;
+    `;
     document.body.appendChild(toast);
     requestAnimationFrame(()=>{
       toast.classList.add("show");
@@ -1635,23 +1637,27 @@
       },500);
     },4500);
   }
-  
-  document.querySelectorAll(".region-card[data-region]").forEach(card=>card.addEventListener("click",event=>{
-    event.preventDefault();
-    showPage("story");
-    showStoryRegion(card.dataset.region);
-  }));
+  document
+    .querySelectorAll(".region-card[data-region]")
+    .forEach(card=>{
+      card.addEventListener("click",event=>{
+        event.preventDefault();
+        showPage("story");
+        showStoryRegion(card.dataset.region);
+      });
+    });
 
   window.addEventListener("storage",()=>{
-  renderReadingProgress();
-  renderSecretCharacters();
-　});
-  
-  window.addEventListener("focus",()=>{
-  renderReadingProgress();
-  renderSecretCharacters();
+    renderReadingProgress();
+    renderSecretCharacters();
   });
 
+  window.addEventListener("focus",()=>{
+    renderReadingProgress();
+    renderSecretCharacters();
+  });
+
+  
   /* EXTRA — PAIR DATABASE */
   const pairCharacters = {
     orange:     {name:"オレンジ", latin:"ORANGE", height:146},
