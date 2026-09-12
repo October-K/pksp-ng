@@ -753,6 +753,51 @@
       main{padding:32px 16px 48px}.region-grid{grid-template-columns:1fr}.update-card li{flex-direction:column;gap:2px}
       .sns-links{flex-direction:column;align-items:center}
     }
+  .achievement-toast{
+    position:fixed;
+    left:50%;
+    bottom:32px;
+    z-index:9999;
+    width:min(360px,calc(100% - 32px));
+    padding:18px 22px;
+    text-align:center;
+    color:var(--ink);
+    background:var(--card-bg);
+    border:1px solid var(--accent);
+    border-radius:10px;
+    box-shadow:0 10px 40px rgba(44,37,32,.18);
+    transform:translate(-50%,30px);
+    opacity:0;
+    transition:opacity .4s ease,transform .4s ease;
+  }
+
+  .achievement-toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+  }
+
+  .achievement-toast span{
+    display:block;
+    margin-bottom:3px;
+    color:var(--accent);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.18em;
+  }
+
+  .achievement-toast strong{
+    display:block;
+    font-family:"Playfair Display",serif;
+    font-size:22px;
+  }
+
+  .achievement-toast small{
+    display:block;
+    margin-top:3px;
+    font-size:9px;
+    letter-spacing:.12em;
+    opacity:.45;
+  }
   </style>
 </head>
 <body>
