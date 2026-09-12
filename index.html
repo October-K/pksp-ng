@@ -1390,8 +1390,8 @@
         johto: 13,
         hoenn: 15,
         sinnoh: 23
-    }
-  },
+      }
+    },
 
     members: {
 
@@ -1401,7 +1401,7 @@
         href: "characters/kanari.html",
         region: "kanto",
         episode: 10
-    },
+      },
 
       maze: {
         name: "メイズ",
@@ -1409,7 +1409,7 @@
         href: "characters/maze.html",
         region: "johto",
         episode: 10
-    },
+      },
 
       chrome: {
         name: "クロム",
@@ -1417,7 +1417,7 @@
         href: "characters/chrome.html",
         region: "hoenn",
         episode: 10
-    },
+      },
 
       ecru: {
         name: "エクル",
@@ -1425,22 +1425,142 @@
         href: "characters/ecru.html",
         region: "sinnoh",
         episode: 10
+      }
     }
-  }
 };
 
 
-function loadReadingProgress(){
-  try{return JSON.parse(localStorage.getItem(PROGRESS_KEY))||{}}
-  catch{return{}}
-}
+  function loadReadingProgress(){
     try{return JSON.parse(localStorage.getItem(PROGRESS_KEY))||{}}
     catch{return{}}
-  }
+    }
 
   function renderReadingProgress(){
     const progress=loadReadingProgress();
+  
+  /* =========================
+   SECRET CHARACTER UNLOCK
+========================= */
 
+function hasReadEpisode(progress, region, episode){
+  return progress[region]?.read?.includes(episode) || false;
+}
+const CLAN_ACHIEVEMENT_KEY =
+  "psng-clan-order-achievement-v1";
+function renderSecretCharacters(){
+  const progress = loadReadingProgress();
+
+  /* Clan Order 名称の解禁 */
+
+  const requirements =
+    UNLOCK_CONFIG.clanOrder.requiredEpisodes;
+  const clanUnlocked =
+    Object.entries(requirements).every(
+      ([region, episode]) =>
+        hasReadEpisode(progress, region, episode)
+    );
+  const clanTitle =
+    document.getElementById("clan-order-title");
+  const clanSubtitle =
+    document.getElementById("clan-order-subtitle");
+  if(clanUnlocked){
+    if(clanTitle){
+      clanTitle.textContent =
+        UNLOCK_CONFIG.clanOrder.label;
+    }
+    if(clanSubtitle){
+      clanSubtitle.textContent =
+        "CLAN ORDER";
+    }
+  }else{
+    if(clanTitle){
+      clanTitle.textContent = "？？？";
+    }
+    if(clanSubtitle){
+      clanSubtitle.textContent = "UNKNOWN";
+    }
+  }
+
+  /* 各幹部の解禁 */
+  document
+    .querySelectorAll("[data-secret-character]")
+    .forEach(card=>{
+      const id = card.dataset.secretCharacter;
+      const character = UNLOCK_CONFIG.members[id];
+      if(!character) return;
+      const unlocked =
+        hasReadEpisode(
+          progress,
+          character.region,
+          character.episode
+        );
+      const name =
+        card.querySelector(".character-card-body strong");
+      const latin =
+        card.querySelector(".character-card-body span");
+      const mark =
+        card.querySelector(".select-mark");
+      if(unlocked){
+        card.classList.remove("unknown");
+        card.href = character.href;
+        if(name){
+          name.textContent = character.name;
+        }
+        if(latin){
+          latin.textContent = character.latin;
+        }
+        if(mark){
+          mark.textContent = "SELECT";
+        }
+      }else{
+        card.classList.add("unknown");
+        card.href = "#";
+        if(name){
+          name.textContent = "？？？";
+        }
+        if(latin){
+          latin.textContent = "UNKNOWN";
+        }
+        if(mark){
+          mark.textContent = "LOCKED";
+        }
+      }
+    });
+  checkClanAchievement(clanUnlocked);
+}
+
+function checkClanAchievement(unlocked){
+  if(!unlocked) return;
+  if(
+    localStorage.getItem(CLAN_ACHIEVEMENT_KEY)
+    === "done"
+  ){
+    return;
+  }
+  localStorage.setItem(
+    CLAN_ACHIEVEMENT_KEY,
+    "done"
+  );
+  const toast =
+    document.createElement("div");
+  toast.className = "achievement-toast";
+  toast.innerHTML = `
+    <span>ACHIEVEMENT UNLOCKED</span>
+    <strong>Clan Order</strong>
+    <small>CHARACTER DATABASE UPDATED</small>
+  `;
+  document.body.appendChild(toast);
+  requestAnimationFrame(()=>{
+    toast.classList.add("show");
+  });
+  setTimeout(()=>{
+    toast.classList.remove("show");
+    setTimeout(()=>{
+      toast.remove();
+    },500);
+  },4500);
+}
+    
     document.querySelectorAll("[data-episode-region]").forEach(link=>{
       const region=link.dataset.episodeRegion;
       const episode=Number(link.dataset.episode);
