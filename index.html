@@ -1093,24 +1093,53 @@
     </div>
   </section>
 
-  <section class="character-region" data-character-region="unknown">
+  <section class="character-region" data-character-region="clan-order">
     <div class="character-region-heading">
-      <h4>？？？</h4>
-      <small>UNKNOWN</small>
+      <h4 id="clan-order-title">？？？</h4>
+      <small id="clan-order-subtitle">UNKNOWN</small>
     </div>
     <div class="character-grid">
-      <a class="character-card unknown" href="#">
+
+    <!-- カナリ -->
+      <a class="character-card unknown secret-character" href="#" data-secret-character="kanari">
+        <span class="select-mark">LOCKED</span>
         <div class="character-portrait"></div>
-        <div class="character-card-body"><strong>？？？</strong><span>UNKNOWN</span></div>
+        <div class="character-card-body">
+        <strong>？？？</strong>
+        <span>UNKNOWN</span>
+        </div>
       </a>
-      <a class="character-card unknown" href="#">
+
+    <!-- メイズ -->
+      <a class="character-card unknown secret-character" href="#" data-secret-character="maze">
+        <span class="select-mark">LOCKED</span>
         <div class="character-portrait"></div>
-        <div class="character-card-body"><strong>？？？</strong><span>UNKNOWN</span></div>
+        <div class="character-card-body">
+          <strong>？？？</strong>
+          <span>UNKNOWN</span>
+        </div>
       </a>
-      <a class="character-card unknown" href="#">
+
+    <!-- クロム -->
+      <a class="character-card unknown secret-character" href="#" data-secret-character="chrome">
+        <span class="select-mark">LOCKED</span>
         <div class="character-portrait"></div>
-        <div class="character-card-body"><strong>？？？</strong><span>UNKNOWN</span></div>
+        <div class="character-card-body">
+          <strong>？？？</strong>
+          <span>UNKNOWN</span>
+        </div>
       </a>
+
+    <!-- エクル -->
+      <a class="character-card unknown secret-character" href="#" data-secret-character="ecru">
+        <span class="select-mark">LOCKED</span>
+        <div class="character-portrait"></div>
+        <div class="character-card-body">
+          <strong>？？？</strong>
+          <span>UNKNOWN</span>
+        </div>
+      </a>
+
     </div>
   </section>
 
@@ -1344,7 +1373,67 @@
   storyTabs.forEach(tab=>tab.addEventListener("click",()=>showStoryRegion(tab.dataset.storyTab)));
 
   const PROGRESS_KEY="psng-reading-progress-v1";
-  function loadReadingProgress(){
+
+
+/* =========================
+   SPOILER / UNLOCK SETTINGS
+   ここだけ変更すれば解禁条件を変えられます
+========================= */
+
+  const UNLOCK_CONFIG = {
+
+    clanOrder: {
+      label: "Clan Order",
+
+      requiredEpisodes: {
+        kanto: 21,
+        johto: 13,
+        hoenn: 15,
+        sinnoh: 23
+    }
+  },
+
+    members: {
+
+      kanari: {
+        name: "カナリ",
+        latin: "KANARI",
+        href: "characters/kanari.html",
+        region: "kanto",
+        episode: 10
+    },
+
+      maze: {
+        name: "メイズ",
+        latin: "MAZE",
+        href: "characters/maze.html",
+        region: "johto",
+        episode: 10
+    },
+
+      chrome: {
+        name: "クロム",
+        latin: "CHROME",
+        href: "characters/chrome.html",
+        region: "hoenn",
+        episode: 10
+    },
+
+      ecru: {
+        name: "エクル",
+        latin: "ECRU",
+        href: "characters/ecru.html",
+        region: "sinnoh",
+        episode: 10
+    }
+  }
+};
+
+
+function loadReadingProgress(){
+  try{return JSON.parse(localStorage.getItem(PROGRESS_KEY))||{}}
+  catch{return{}}
+}
     try{return JSON.parse(localStorage.getItem(PROGRESS_KEY))||{}}
     catch{return{}}
   }
@@ -1389,9 +1478,15 @@
     showStoryRegion(card.dataset.region);
   }));
 
-  window.addEventListener("storage",renderReadingProgress);
-  window.addEventListener("focus",renderReadingProgress);
-
+  window.addEventListener("storage",()=>{
+  renderReadingProgress();
+  renderSecretCharacters();
+　});
+  
+  window.addEventListener("focus",()=>{
+  renderReadingProgress();
+  renderSecretCharacters();
+  });
 
   /* EXTRA — PAIR DATABASE */
   const pairCharacters = {
@@ -2002,6 +2097,7 @@
 
 
   renderReadingProgress();
+  renderSecretCharacters();
   showPage("top");
 </script>
 </body>
