@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script src="../../js/auth.js" data-login="../../login.html"></script>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EP.20 第20話</title>
+  <style>
+    :root{--bg:#f4f1eb;--ink:#2c2520;--accent:#c0392b;--card-bg:#fffdf8;--border:#d4cdc4;--shadow:rgba(44,37,32,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#f4f1eb,#eee8df);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic",sans-serif;line-height:2.1}
+    .wrap{max-width:780px;margin:0 auto;padding:42px 20px 80px}
+    .paper{position:relative;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:54px 48px;box-shadow:0 6px 28px var(--shadow)}
+    .paper::before{content:"";position:absolute;inset:14px;border:1px solid rgba(212,205,196,.55);border-radius:9px;pointer-events:none}
+    .head,.text,.read-marker,.back{position:relative;z-index:1}
+    .head{padding-bottom:20px;margin-bottom:30px;border-bottom:1px solid var(--border)}
+    .meta{font-size:11px;letter-spacing:.14em;opacity:.48}
+    h1{font-family:Georgia,"Yu Mincho",serif;font-size:31px;line-height:1.45;margin:.2em 0 .3em}
+    .text{font-size:15px}.text p{margin:0 0 1.5em}
+    .read-marker{margin-top:54px;padding:22px;border-top:1px dashed var(--border);text-align:center}
+    .read-marker strong{display:block;color:var(--accent);letter-spacing:.16em;font-size:12px;margin-bottom:6px}
+    .read-marker p{font-size:12px;opacity:.55}
+    .back{display:inline-block;margin-top:26px;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none}
+    @media(max-width:600px){.wrap{padding:20px 10px 55px}.paper{padding:40px 26px}}
+  </style>
+</head>
+<body>
+<div class="wrap"><article class="paper">
+  <header class="head">
+    <p class="meta">JOHTO / EP.20</p>
+    <h1 id="episode-title">第20話</h1>
+    <p class="meta">POKÉMON SPECIAL NEXT GENERATION</p>
+  </header>
+
+  <div class="text" id="novel-text">
+    <p>本文を読み込んでいます……</p>
+  </div>
+
+  <div class="read-marker" id="read-marker">
+    <strong>READ COMPLETE</strong>
+    <p>ここまで読むと、TOPの旅の現在地へ反映されます。</p>
+  </div>
+
+  <a class="back" href="../../index.html#story">← SITEへ戻る</a>
+</article></div>
+
+<script>
+const REGION='johto';
+const EPISODE=20;
+const EPISODE_PAD='20';
+const KEY="psng-reading-progress-v1";
+
+let hasContent=false;
+let episodeTitle='第20話';
+
+function loadProgress(){
+  try{return JSON.parse(localStorage.getItem(KEY))||{}}
+  catch{return {}}
+}
+
+async function loadTitleFromIndex(){
+  try{
+    const response=await fetch("../../index.html",{cache:"no-store"});
+    if(!response.ok) return;
+
+    const html=await response.text();
+    const doc=new DOMParser().parseFromString(html,"text/html");
+    const link=doc.querySelector(
+      `[data-episode-region="${REGION}"][data-episode="${EPISODE}"]`
+    );
+    const found=link?.querySelector(".ep-title")?.textContent?.trim();
+
+    if(found){
+      episodeTitle=found;
+      document.getElementById("episode-title").textContent=found;
+      document.title=`EP.${EPISODE_PAD} ${found}`;
+    }
+  }catch(error){
+    console.warn("タイトルの自動取得に失敗しました。",error);
+  }
+}
+
+function renderText(text){
+  const box=document.getElementById("novel-text");
+  const marker=document.getElementById("read-marker");
+  box.innerHTML="";
+
+  const normalized=text.replace(/\r\n/g,"\n").trim();
+
+  if(!normalized){
+    hasContent=false;
+    box.innerHTML="<p>この話は現在準備中です。</p>";
+    marker.style.display="none";
+    return;
+  }
+
+  hasContent=true;
+  marker.style.display="block";
+
+  normalized.split(/\n\s*\n/).forEach(block=>{
+    const p=document.createElement("p");
+    block.split("\n").forEach((line,index)=>{
+      if(index>0) p.appendChild(document.createElement("br"));
+      p.appendChild(document.createTextNode(line));
+    });
+    box.appendChild(p);
+  });
+}
+
+function markRead(){
+  if(!hasContent) return;
+
+  const p=loadProgress();
+
+  if(!p[REGION]) p[REGION]={read:[],furthest:0,title:""};
+  if(!p[REGION].read.includes(EPISODE)) p[REGION].read.push(EPISODE);
+
+  p[REGION].read.sort((a,b)=>a-b);
+
+  if(EPISODE>=p[REGION].furthest){
+    p[REGION].furthest=EPISODE;
+    p[REGION].title=episodeTitle;
+  }
+
+  localStorage.setItem(KEY,JSON.stringify(p));
+
+  const message=document.querySelector("#read-marker p");
+  if(message){
+    message.textContent="読了を記録しました。TOPの進捗にも反映されます。";
+  }
+}
+
+loadTitleFromIndex();
+
+fetch(`text/${EPISODE_PAD}.txt`)
+  .then(response=>{
+    if(!response.ok) throw new Error("本文ファイルを読み込めませんでした");
+    return response.text();
+  })
+  .then(renderText)
+  .catch(error=>{
+    document.getElementById("novel-text").innerHTML=
+      "<p>本文の読み込みに失敗しました。</p>";
+    document.getElementById("read-marker").style.display="none";
+    console.error(error);
+  });
+
+const marker=document.getElementById("read-marker");
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting && hasContent){
+      markRead();
+      observer.disconnect();
+    }
+  });
+},{threshold:.7});
+observer.observe(marker);
+</script>
+</body>
+</html>
