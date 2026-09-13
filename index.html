@@ -848,22 +848,22 @@
         <div class="location"><span>CURRENT LOCATION</span><strong>はじめから</strong></div>
       </a>
 
-      <a href="#story" class="region-card" data-region="johto" data-total="0">
-        <div class="card-top"><span class="region-no">02</span><span class="status">NOT STARTED</span></div>
+      <a href="#story" class="region-card" data-region="johto" data-total="30" data-preparing="true">
+        <div class="card-top"><span class="region-no">02</span><span class="status">PREPARING</span></div>
         <div class="region-icon">○</div><h3>JOHTO</h3><p class="jp">ジョウト編</p>
-        <div class="location"><span>CURRENT LOCATION</span><strong>はじめから</strong></div>
+        <div class="location"><span>CURRENT LOCATION</span><strong>準備中</strong></div>
       </a>
 
-      <a href="#story" class="region-card" data-region="hoenn" data-total="0">
-        <div class="card-top"><span class="region-no">03</span><span class="status">NOT STARTED</span></div>
+      <a href="#story" class="region-card" data-region="hoenn" data-total="30" data-preparing="true">
+        <div class="card-top"><span class="region-no">03</span><span class="status">PREPARING</span></div>
         <div class="region-icon">○</div><h3>HOENN</h3><p class="jp">ホウエン編</p>
-        <div class="location"><span>CURRENT LOCATION</span><strong>はじめから</strong></div>
+        <div class="location"><span>CURRENT LOCATION</span><strong>準備中</strong></div>
       </a>
 
-      <a href="#story" class="region-card" data-region="sinnoh" data-total="0">
-        <div class="card-top"><span class="region-no">04</span><span class="status">NOT STARTED</span></div>
+      <a href="#story" class="region-card" data-region="sinnoh" data-total="30" data-preparing="true">
+        <div class="card-top"><span class="region-no">04</span><span class="status">PREPARING</span></div>
         <div class="region-icon">○</div><h3>SINNOH</h3><p class="jp">シンオウ編</p>
-        <div class="location"><span>CURRENT LOCATION</span><strong>はじめから</strong></div>
+        <div class="location"><span>CURRENT LOCATION</span><strong>準備中</strong></div>
       </a>
     </div>
 
@@ -1010,16 +1010,31 @@
       </section>
 
       <section class="story-region" data-story-region="johto">
-        <div class="story-region-title"><div><p class="eyebrow">02 / JOHTO</p><h3>ジョウト編</h3></div><p>コーラル・クォーツ</p></div>
-        <p>― 準備中 ―</p>
+        <div class="story-region-title"><div><p class="eyebrow">02 / JOHTO</p><h3>ジョウト編</h3></div><p>準備中</p></div>
+        <div class="story-introduction">
+          <p class="eyebrow">COMING SOON</p>
+          <h3>準備中</h3>
+          <p>ジョウト編は現在準備中です。</p>
+          <p>公開までしばらくお待ちください。</p>
+        </div>
       </section>
       <section class="story-region" data-story-region="hoenn">
-        <div class="story-region-title"><div><p class="eyebrow">03 / HOENN</p><h3>ホウエン編</h3></div><p>チャロアイト・ペリドット</p></div>
-        <p>― 準備中 ―</p>
+        <div class="story-region-title"><div><p class="eyebrow">03 / HOENN</p><h3>ホウエン編</h3></div><p>準備中</p></div>
+        <div class="story-introduction">
+          <p class="eyebrow">COMING SOON</p>
+          <h3>準備中</h3>
+          <p>ホウエン編は現在準備中です。</p>
+          <p>公開までしばらくお待ちください。</p>
+        </div>
       </section>
       <section class="story-region" data-story-region="sinnoh">
-        <div class="story-region-title"><div><p class="eyebrow">04 / SINNOH</p><h3>シンオウ編</h3></div><p>トルマリン・アデュレリア・コーネルピン</p></div>
-        <p>― 準備中 ―</p>
+        <div class="story-region-title"><div><p class="eyebrow">04 / SINNOH</p><h3>シンオウ編</h3></div><p>準備中</p></div>
+        <div class="story-introduction">
+          <p class="eyebrow">COMING SOON</p>
+          <h3>準備中</h3>
+          <p>シンオウ編は現在準備中です。</p>
+          <p>公開までしばらくお待ちください。</p>
+        </div>
       </section>
     </div>
 
@@ -1495,6 +1510,18 @@
       const loc=card.querySelector(".location strong");
       const status=card.querySelector(".status");
       const icon=card.querySelector(".region-icon");
+
+      const preparing=card.dataset.preparing==="true";
+      if(preparing){
+        card.classList.remove("current");
+        if(fill) fill.style.width="0%";
+        if(pct) pct.textContent="0%";
+        if(loc) loc.textContent="準備中";
+        if(status) status.textContent="PREPARING";
+        if(icon) icon.textContent="○";
+        return;
+      }
+
       if(fill) fill.style.width=percent+"%";
       if(pct) pct.textContent=percent+"%";
       if(loc) loc.textContent=data.furthest
